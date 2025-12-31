@@ -1,0 +1,4 @@
+
+2025-12-27 21:28:34 WARNING  [Artemis Signals] New strategies not available: cannot import name 'MAX_WORKERS' from 'config' (D:\TheiaOne_Programs\sv-artemis-signals-public\config.py)
+
+2025-12-27 21:28:36 WARNING  [Artemis Signals] Validation thresholds not available: No module named 'config.validation_thresholds'; 'config' is not a package
