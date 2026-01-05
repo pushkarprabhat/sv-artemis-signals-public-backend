@@ -143,58 +143,77 @@ class EmailService:
             return []
     
     def send_email(self, 
-                   recipient_email: str,
-                   subject: str,
-                   body_html: str,
-                   attachments: Optional[List[Path]] = None) -> bool:
+                   recipient_email: str = None,
+                   subject: str = None,
+                   body_html: str = None,
+                   attachments: Optional[List[Path]] = None,
+                   body: str = None,
+                   recipients: List[str] = None) -> bool:
         """
         Send professional HTML email with optional attachments
         
         Args:
-            recipient_email: Recipient's email
+            recipient_email: Single recipient's email (legacy)
             subject: Email subject
             body_html: HTML body content
             attachments: List of file paths to attach
+            body: Plain text body content (will be wrapped in HTML if body_html missing)
+            recipients: List of recipients (replaces recipient_email if provided)
         
         Returns:
             True if sent successfully, False otherwise
         """
         try:
-            # Create message
-            msg = MIMEMultipart('alternative')
-            msg['From'] = self.sender_email
-            msg['To'] = recipient_email
-            msg['Subject'] = subject
+            # Handle multiple recipients or single one
+            target_recipients = recipients or ([recipient_email] if recipient_email else [])
+            if not target_recipients:
+                logger.warning("No recipients specified for email")
+                return False
+                
+            # Handle body vs body_html
+            final_html = body_html or (f"<html><body><pre>{body}</pre></body></html>" if body else "<html><body></body></html>")
             
-            # Attach HTML body
-            html_part = MIMEText(body_html, 'html')
-            msg.attach(html_part)
+            success = True
+            for email in target_recipients:
+                # Create message
+                msg = MIMEMultipart('alternative')
+                msg['From'] = self.sender_email
+                msg['To'] = email
+                msg['Subject'] = subject
+                
+                # Attach HTML body
+                html_part = MIMEText(final_html, 'html')
+                msg.attach(html_part)
+                
+                # Attach files if provided
+                if attachments:
+                    for file_path in attachments:
+                        if file_path.exists():
+                            with open(file_path, 'rb') as f:
+                                part = MIMEBase('application', 'octet-stream')
+                                part.set_payload(f.read())
+                                encoders.encode_base64(part)
+                                part.add_header(
+                                    'Content-Disposition',
+                                    f'attachment; filename= {file_path.name}'
+                                )
+                                msg.attach(part)
+                
+                # Send email
+                try:
+                    with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                        server.starttls()
+                        server.login(self.sender_email, self.sender_password)
+                        server.send_message(msg)
+                    logger.info(f"Email sent successfully to {email}: {subject}")
+                except Exception as e:
+                    logger.error(f"Error sending email to {email}: {e}")
+                    success = False
             
-            # Attach files if provided
-            if attachments:
-                for file_path in attachments:
-                    if file_path.exists():
-                        with open(file_path, 'rb') as f:
-                            part = MIMEBase('application', 'octet-stream')
-                            part.set_payload(f.read())
-                            encoders.encode_base64(part)
-                            part.add_header(
-                                'Content-Disposition',
-                                f'attachment; filename= {file_path.name}'
-                            )
-                            msg.attach(part)
-            
-            # Send email
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()
-                server.login(self.sender_email, self.sender_password)
-                server.send_message(msg)
-            
-            logger.info(f"Email sent successfully to {recipient_email}: {subject}")
-            return True
+            return success
             
         except Exception as e:
-            logger.error(f"Error sending email to {recipient_email}: {e}")
+            logger.error(f"Error in send_email: {e}")
             return False
     
     def send_closing_bell_report(self, report_date: str = None):

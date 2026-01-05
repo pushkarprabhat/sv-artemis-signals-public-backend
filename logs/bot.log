@@ -2,3 +2,166 @@
 2025-12-27 21:28:34 WARNING  [Artemis Signals] New strategies not available: cannot import name 'MAX_WORKERS' from 'config' (D:\TheiaOne_Programs\sv-artemis-signals-public\config.py)
 
 2025-12-27 21:28:36 WARNING  [Artemis Signals] Validation thresholds not available: No module named 'config.validation_thresholds'; 'config' is not a package
+
+2025-12-27 22:45:26 WARNING  [Artemis Signals] New strategies not available: cannot import name 'get_options_chain' from 'core.options_chain' (D:\TheiaOne_Programs\sv-artemis-signals-public\core\options_chain.py)
+
+2025-12-29 08:18:47 WARNING  [Artemis Signals] New strategies not available: cannot import name 'scan_strangle_setups' from 'core.strangle' (D:\TheiaOne_Programs\sv-artemis-signals-public\core\strangle.py)
+
+2025-12-29 08:19:30 WARNING  [Artemis Signals] New strategies not available: No module named 'utils.telegram_service'
+2025-12-29 08:20:45 INFO     [Artemis Signals] ✅ New strategies module loaded (10 pairs + parallel options)
+
+2026-01-02 14:05:55 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:12:04 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:12:17 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:17:44 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:17:57 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:18:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 14:18:24 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 15:19:57 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 15:20:12 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:07:08 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:25:21 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:28:53 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:28:53 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:29:05 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:29:05 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:33:29 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:33:29 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:33:40 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:33:40 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:44:07 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:44:07 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:44:22 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:44:22 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:58:25 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:58:25 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:58:33 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 16:58:33 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:53:22 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:53:22 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:53:36 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:53:37 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:59:19 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:59:19 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:59:27 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 18:59:27 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 23:38:51 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 23:42:44 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-02 23:42:51 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 20:55:40 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 20:56:57 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 20:57:18 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 21:05:38 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 21:08:05 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 21:08:19 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:19:18 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:23:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:23:41 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:27:14 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:27:34 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:28:12 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:41:17 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-05 22:44:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!

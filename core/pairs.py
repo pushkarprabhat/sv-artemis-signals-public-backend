@@ -580,86 +580,84 @@ def scan_all_strategies(tf="day", p_value_threshold=None, min_common=100, capita
     
     # PART 1: Pair Trading Scan (cointegration)
     if include_pairs:
-        # OPTIMIZED: Use focused universe (NIFTY50 + NIFTYBANK + NIFTYFIN = ~70 stocks)
-        # instead of all 8,893 NSE stocks for FAST scanning
-        focused_symbols = get_focused_universe()
-        logger.info(f"🎯 OPTIMIZED SCAN: Using {len(focused_symbols)} focused stocks (NIFTY50 + BANK + FIN)")
-        
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if tf not in allowed_intervals:
+            logger.warning(f"Interval {tf} not allowed for pairs trading. Skipping.")
+            return []
+
+        # Restrict to Nifty 500 and sector-based selection
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map, get_lot_size_map, get_volatility_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
+        lot_size_map = get_lot_size_map()
+        volatility_map = get_volatility_map(tf)
+
         prices = {}
-        
-        # Load prices only for focused universe
-        for symbol in focused_symbols:
+        for symbol in nifty500_symbols:
             p = load_price(symbol, tf)
             if p is not None and len(p) > 200:
                 prices[symbol] = p
-        
-        logger.info(f"✅ Loaded {len(prices)} symbol prices from {len(focused_symbols)} focused stocks")
-        
-        # Simple cointegration scan (fast & working)
-        # OPTIMIZED: Use pre-mapped sectors from focused_universe
-        
-        stocks = list(prices.keys())
-        if len(stocks) < 3:
-            logger.warning(f"Not enough stocks with price data for pair trading ({len(stocks)} found)")
-            stocks = []
-        
-        # Build sector mapping using focused_universe (pre-defined, no CSV lookup needed)
-        stock_sectors = {stock: get_stock_sector(stock) for stock in stocks}
-        
-        # Group stocks by sector
+
+        logger.info(f"✅ Loaded {len(prices)} Nifty 500 symbol prices for {tf}")
+
+        # Group by sector
         stocks_by_sector = {}
-        for stock in stocks:
-            sector = stock_sectors.get(stock, 'Other')
+        for symbol in prices:
+            sector = sector_map.get(symbol, 'Other')
             if sector not in stocks_by_sector:
                 stocks_by_sector[sector] = []
-            stocks_by_sector[sector].append(stock)
-        
-        logger.info(f"📊 Pairing stocks within {len(stocks_by_sector)} sectors for better correlation")
-        
-        # Pair only within the same sector
+            stocks_by_sector[sector].append(symbol)
+
+        logger.info(f"📊 Pairing Nifty 500 stocks within {len(stocks_by_sector)} sectors")
+
         for sector, sector_stocks in stocks_by_sector.items():
             if len(sector_stocks) < 2:
-                continue  # Need at least 2 stocks in sector to pair
-            
-            logger.debug(f"Scanning {len(sector_stocks)} stocks in {sector}")
-            
+                continue
             for a, b in itertools.combinations(sector_stocks, 2):
                 try:
+                    # Always assign a as long, b as short
                     pa = prices[a]
                     pb = prices[b]
                     common = pa.index.intersection(pb.index)
                     if len(common) < 100:
                         continue
                     _, pval, _ = coint(pa.loc[common], pb.loc[common])
-                    
-                    # Calculate correlation for storage
                     correlation = np.corrcoef(pa.loc[common], pb.loc[common])[0, 1]
-                    
-                    # Check capital constraints for both symbols
-                    limit_a, price_a, capital_a = check_capital_requirement(a, capital_limit, tf)
-                    limit_b, price_b, capital_b = check_capital_requirement(b, capital_limit, tf)
-                    
-                    # Calculate max profit and loss
-                    max_profit, max_loss = calculate_max_profit_loss(a, b, tf)
-                    
-                    if limit_a is None or limit_b is None:
-                        continue
-                    
-                    # Both legs must be within capital limit
-                    within_capital_limit = limit_a and limit_b
-                    
-                    if pval < p_value_threshold:
-                        # Calculate quantities for both legs
-                        qty_a = calculate_quantity(price_a, capital_limit)
-                        qty_b = calculate_quantity(price_b, capital_limit)
-                        
-                        # Build selection criteria explanation
+
+                    # Delta-neutral, equal notional sizing using lot size and volatility
+                    lot_a = lot_size_map.get(a, 1)
+                    lot_b = lot_size_map.get(b, 1)
+                    vol_a = volatility_map.get(a, 1)
+                    vol_b = volatility_map.get(b, 1)
+                    price_a = pa.iloc[-1]
+                    price_b = pb.iloc[-1]
+                    notional_a = price_a * lot_a
+                    notional_b = price_b * lot_b
+                    # Adjust lots so notional exposure is equal
+                    if notional_a > notional_b:
+                        lots_b = int(notional_a / notional_b)
+                        lots_a = 1
+                    else:
+                        lots_a = int(notional_b / notional_a)
+                        lots_b = 1
+                    # Suggest best instrument for long (lower volatility, higher liquidity)
+                    best_long = a if vol_a <= vol_b else b
+                    best_short = b if vol_a <= vol_b else a
+
+                    # Check capital constraints
+                    capital_a = price_a * lot_a * lots_a
+                    capital_b = price_b * lot_b * lots_b
+                    within_capital_limit = (capital_a <= capital_limit) and (capital_b <= capital_limit)
+
+                    if pval < p_value_threshold and within_capital_limit:
                         criteria = [
                             f"Coint(p={pval:.4f})",
                             f"Corr(r={correlation:.3f})",
+                            f"Delta-neutral lots: {lots_a}x{a} vs {lots_b}x{b}",
+                            f"Vol: {vol_a:.2f}/{vol_b:.2f}",
                             f"Capital: ₹{capital_a + capital_b:,.0f}"
                         ]
-                        
                         results.append({
                             "pair": f"{a}-{b}",
                             "p_value": round(pval, 5),
@@ -672,20 +670,21 @@ def scan_all_strategies(tf="day", p_value_threshold=None, min_common=100, capita
                             "correlation": round(correlation, 4),
                             "symbol1": a,
                             "symbol2": b,
-                            "qty1": qty_a,
-                            "qty2": qty_b,
+                            "qty1": lot_a * lots_a,
+                            "qty2": lot_b * lots_b,
                             "price1": round(price_a, 2),
                             "price2": round(price_b, 2),
                             "capital_required": round(capital_a + capital_b, 2),
                             "within_capital_limit": within_capital_limit,
                             "selection_criteria": " | ".join(criteria),
-                            "max_profit": max_profit,
-                            "max_loss": max_loss
+                            "max_profit": None,
+                            "max_loss": None,
+                            "best_long": best_long,
+                            "best_short": best_short
                         })
-                        
-                        # Save to pair calculations JSON
                         save_pair_calculations(f"{a}-{b}", a, b, correlation, pval, sector)
-                except:
+                except Exception as e:
+                    logger.debug(f"Pair scan error {a}-{b}: {e}")
                     continue
     
     # PART 2: Strangle Strategy Scan (if enabled)

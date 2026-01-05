@@ -3,92 +3,100 @@
 # Institutional-grade quantitative trading system
 
 import streamlit as st
+import sys
+import os
+
+# --- ENFORCE CORRECT PYTHONPATH AND WORKING DIRECTORY ---
+EXPECTED_ROOT = os.path.abspath(os.path.dirname(__file__))
+if EXPECTED_ROOT not in sys.path:
+    sys.path.insert(0, EXPECTED_ROOT)
+if os.environ.get('PYTHONPATH', '').split(os.pathsep)[0] != EXPECTED_ROOT:
+    print(f"\n[ERROR] Please run this script from the project root and set PYTHONPATH to: {EXPECTED_ROOT}\n\nExample:\n  set PYTHONPATH={EXPECTED_ROOT}\n  cd {EXPECTED_ROOT}\n  python main.py\n\nFor Shivaansh & Krishaansh — this line pays your fees!\n")
+    sys.exit(1)
 import pandas as pd
 import numpy as np
 from datetime import datetime
 from kiteconnect import KiteConnect
-from dotenv import load_dotenv
-import os
-from pathlib import Path
-import plotly.graph_objects as go
-import plotly.express as px
-import time
 
-# ============================================================================
-# CONFIGURATION & PROJECT BRANDING (must be before st.set_page_config)
-# ============================================================================
-from config import PROJECT_NAME, COMMERCIAL_MODE, TIMEFRAMES
+with tab1:
+    st.header("📊 Data Engine — Your Foundation")
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🔄 UPDATE ALL PRICE DATA (550+ assets)", type="primary"):
+            with st.spinner("📥 Downloading..."):
+                try:
+                    download_all_price_data()
+                    # ...existing code...
+                except Exception as e:
+                    st.error(f"❌ Download failed: {e}")
 
-# ============================================================================
-# IMPORTS - CORE FUNCTIONALITY
-# ============================================================================
-from utils.logger import logger
-from utils.helpers import get_kite_instance, set_kite, get_ltp
-from utils.market_hours import is_market_open
-from core.downloader import download_all_price_data
-from core.options_chain import download_and_save_atm_iv
-from core.pairs import scan_all_strategies
-from core.backtester import backtest_pair_multi_horizon
-from core.strangle import get_strangle_setup
-from core.kelly import position_size
-from core.volatility import garch_volatility, historical_volatility, india_vix_signal
+    with col2:
+        if st.button("📊 DOWNLOAD TODAY'S OPTION CHAIN + IV", type="primary"):
+            with st.spinner("🔨 Building edge..."):
+                try:
+                    download_and_save_atm_iv()
+                    st.success("✅ IV Database updated")
+                except Exception as e:
+                    st.error(f"❌ IV download failed: {e}")
 
-# ============================================================================
-# IMPORTS - NEW STRATEGIES & PARALLEL OPTIONS
-# ============================================================================
-try:
-    from core.pairs_strategies import scan_all_pair_strategies
-    from core.parallel_options_scanner import (
-        start_parallel_options_scanning,
-        get_options_scanner,
-        get_live_options_recommendations
-    )
-    STRATEGIES_AVAILABLE = True
-    logger.info("✅ New strategies module loaded (10 pairs + parallel options)")
-except Exception as e:
-    logger.warning(f"New strategies not available: {e}")
-    STRATEGIES_AVAILABLE = False
+with tab2:
+    st.header("🎯 Strategy Scanner — ML + GARCH + IV")
+    tf = st.selectbox("Timeframe", TIMEFRAMES, index=3)
+    if st.button("🚀 SCAN ALL STRATEGIES NOW", type="primary"):
+        with st.spinner("⚡ Running scanner..."):
+            try:
+                df = scan_all_strategies(tf)
+                st.session_state.results = df
+                st.success("✅ Scan complete!")
+                st.dataframe(df, use_container_width=True)
+            except Exception as e:
+                st.error(f"❌ Scan failed: {e}")
+    if 'results' in st.session_state and not st.session_state.results.empty:
+        st.markdown("### Results")
+        st.dataframe(st.session_state.results, use_container_width=True)
 
-# ============================================================================
-# IMPORTS - LTP DATABASE (PERSISTENT PRICE STORAGE)
-# ============================================================================
-from core.ltp_database import get_ltp_database
-from utils.ltp_display import (
-    display_ltp_ticker,
-    display_ltp_table,
-    display_ltp_single,
-    display_ltp_summary_stats,
-    display_market_status
-)
+with tab3:
+    st.header("📈 Backtesting — Prove It Works")
+    st.markdown("Select a pair and timeframe to backtest")
+    col1, col2 = st.columns(2)
+    with col1:
+        pair = st.text_input("Pair (e.g., SBIN-TCS)", "")
+    with col2:
+        tf_bt = st.selectbox("Timeframe", TIMEFRAMES)
+    if st.button("▶️ RUN BACKTEST", type="primary"):
+        if pair and "-" in pair:
+            try:
+                a, b = pair.split("-")
+                with st.spinner("⏳ Backtesting..."):
+                    result = backtest_pair_multi_tf(a, b, tf_bt)
+                    if result:
+                        st.success(f"✅ Return: {result.get('return_pct', 0):.2f}% | Sharpe: {result.get('sharpe', 0):.2f}")
+                        st.json(result)
+                    else:
+                        st.warning("No backtest results")
+            except Exception as e:
+                st.error(f"❌ Backtest failed: {e}")
+        else:
+            st.warning("⚠️ Enter pair as SYMBOL1-SYMBOL2")
 
-# ============================================================================
-# IMPORTS - DASHBOARD DISPLAY (PROFESSIONAL UI)
-# ============================================================================
-from utils.dashboard_display import (
-    display_major_indices,
-    display_index_tabs,
-    display_quick_metrics
-)
+with tab4:
+    # ...existing code for system info/metrics...
 
-# ============================================================================
-# IMPORTS - EOD/BOD SCHEDULER (CRITICAL FOR AUTOMATION)
-# ============================================================================
-try:
-    from core.scheduler import SchedulerService
-    SCHEDULER_AVAILABLE = True
-except Exception as e:
-    logger.warning(f"Scheduler not available: {e}")
-    SCHEDULER_AVAILABLE = False
-
-# ============================================================================
-# IMPORTS - ADAPTIVE VALIDATION (NEW)
-# ============================================================================
-try:
-    from config.validation_thresholds import validation_stats, get_min_records_threshold
-    VALIDATION_AVAILABLE = True
-except Exception as e:
-    logger.warning(f"Validation thresholds not available: {e}")
-    VALIDATION_AVAILABLE = False
+with tab5:
+    st.header("🚦 Active Signals — Real-Time")
+    import os, json
+    signals_path = os.path.join(os.path.dirname(__file__), 'marketdata', 'signals.json')
+    if os.path.exists(signals_path):
+        with open(signals_path, 'r', encoding='utf-8') as f:
+            signals = json.load(f)
+        if signals:
+            import pandas as pd
+            df = pd.DataFrame(signals)
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("No active signals found.")
+    else:
+        st.warning("signals.json not found. Run scanner to generate signals.")
 
 # ============================================================================
 # ZERODHA LOGIN
@@ -358,7 +366,7 @@ with st.sidebar:
     st.markdown("#### 📋 Reports")
     if st.button("🌅 Opening Bell", use_container_width=True, key="nav_opening"):
         st.switch_page("pages/opening_bell_report.py")
-    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing"):
+    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing":
         st.switch_page("pages/closing_bell_report.py")
     if st.button("📧 Email Reports", use_container_width=True, key="nav_email"):
         st.switch_page("pages/email_subscriptions.py")
@@ -491,15 +499,15 @@ if st.session_state.get('scanner_run', False):
                 
                 # Display signals table
                 st.dataframe(
-                    signals_df[['pair', 'p_value', 'industry', 'ml_score', 'recommend', 
+                    signals_df[['pair', 'p_value', 'industry', 'ml_score', 'recommend',
                                 'capital_required', 'selection_criteria']].head(10),
                     use_container_width=True,
                     height=400
                 )
-                
+
                 # Trade execution integration (Paper or Live based on mode)
                 st.markdown(f"### 🚀 EXECUTE TRADES ({st.session_state.trading_mode} MODE)")
-                
+
                 col_a, col_b, col_c = st.columns([2, 1, 1])
                 with col_a:
                     mode_emoji = "📝" if st.session_state.trading_mode == "PAPER" else "🔴"
@@ -510,26 +518,25 @@ if st.session_state.get('scanner_run', False):
                     execute_button_label = f"▶️ EXECUTE TOP {num_to_execute}"
                     if st.session_state.trading_mode == "LIVE":
                         execute_button_label = f"🔴 LIVE: EXECUTE {num_to_execute}"
-                    
+
                     if st.button(execute_button_label, type="primary"):
                         st.session_state.execute_trades_count = num_to_execute
-                
+
                 # Execute trades if button clicked
                 if st.session_state.get('execute_trades_count', 0) > 0:
                     num_exec = st.session_state.execute_trades_count
                     top_signals = signals_df.head(num_exec)
-                    
+
                     success_count = 0
                     fail_count = 0
-                    
+
                     progress_bar = st.progress(0)
                     status_text = st.empty()
-                    
+
                     if st.session_state.paper_manager:
                         for idx, signal in top_signals.iterrows():
                             status_text.text(f"Executing {idx + 1}/{num_exec}: {signal['pair']}...")
                             progress_bar.progress((idx + 1) / num_exec)
-                            
                             try:
                                 # Execute paper trade
                                 st.session_state.paper_manager.add_pair_trade(
@@ -548,11 +555,10 @@ if st.session_state.get('scanner_run', False):
                             except Exception as e:
                                 fail_count += 1
                                 st.error(f"❌ Failed: {signal['pair']} - {e}")
-                            
                             time.sleep(0.3)
                     else:
                         st.error("Paper trading manager not initialized")
-                    
+
                     # Summary
                     st.markdown("---")
                     col1, col2 = st.columns(2)
@@ -560,15 +566,15 @@ if st.session_state.get('scanner_run', False):
                         st.metric("✅ Successful", success_count)
                     with col2:
                         st.metric("❌ Failed", fail_count)
-                    
+
                     st.info("📝 View all paper trades in the **Portfolio** page →")
-                    
+
                     # Reset execution flag
                     st.session_state.execute_trades_count = 0
-                    
+
                 # Save signals to session for other pages
                 st.session_state.latest_signals = signals_df
-                
+
             else:
                 st.warning("No signals found. Market conditions may not favor current strategies.")
                 
@@ -812,11 +818,12 @@ with st.expander("💰 POSITION SIZING — KELLY CRITERION"):
 # ============================================================================
 # MAIN TABS
 # ============================================================================
+
 if not COMMERCIAL_MODE:
     # Personal mode: Personal dashboard layout
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Info"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Info", "🚦 Active Signals"])
 else:
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Metrics"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Metrics", "🚦 Active Signals"])
 
 with tab1:
     st.header("📊 Data Engine — Your Foundation")
@@ -918,83 +925,26 @@ with tab3:
         else:
             st.warning("⚠️ Enter pair as SYMBOL1-SYMBOL2")
 
+
+
 with tab4:
-    if not COMMERCIAL_MODE:
-        # Personal mode: System development status
-        # 
-        # This system is built for ONE PURPOSE:
-        # To generate consistent returns through systematic execution
-        # 
-        # Core principles:
-        # - Disciplined risk management
-        # - Systematic strategy execution
-        # - Continuous monitoring and improvement
-        # 
-        # Target performance:
-        # - Annual return goal: 40-50%
-        # - Risk per trade: 2%
-        # - Starting April 2026: Full automation
-        # 
-        # Every line of code follows institutional best practices
-        # Every decision is data-driven and rule-based
-        # 
-        # NO EXCUSES. ONLY EXECUTION. ONLY DISCIPLINE.
-        # 
-        st.header("📊 System Development Status")
-        st.markdown("""
-        ### 💰 PERFORMANCE TARGETS
-        
-        **Annual Return Goal: 40-50%**
-        - Risk-adjusted returns
-        - Sharpe ratio > 2.0
-        - Maximum drawdown < 20%
-        
-        **Status**: System development in progress
-        
-        ---
-        
-        ### 📊 Current System Status
-        - ✅ Vectorized backtesting engine
-        - ✅ Pair trading with cointegration
-        - ✅ Adaptive validation system
-        - ✅ EOD/BOD automated scheduler
-        - ✅ Multi-strategy scanner
-        - 🔄 Live trading integration
-        
-        **No excuses. Only execution. Only discipline.**
-        
-        *Systematic execution of proven strategies.*
-        """)
+    # ...existing code for system info/metrics...
+
+with tab5:
+    st.header("🚦 Active Signals — Real-Time")
+    import os, json
+    signals_path = os.path.join(os.path.dirname(__file__), 'marketdata', 'signals.json')
+    if os.path.exists(signals_path):
+        with open(signals_path, 'r', encoding='utf-8') as f:
+            signals = json.load(f)
+        if signals:
+            import pandas as pd
+            df = pd.DataFrame(signals)
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("No active signals found.")
     else:
-        st.header("📊 System Metrics & Performance")
-        st.markdown(""""
-        ### 🎯 Platform Capabilities
-        
-        **Core Infrastructure**
-        - ✅ Vectorized backtesting engine (10x faster)
-        - ✅ Multi-strategy scanning (14+ strategies)
-        - ✅ Cointegration-based pair trading
-        - ✅ Real-time options Greeks calculation
-        - ✅ ML-powered signal scoring (0-300 scale)
-        
-        **Automation & Scheduling**
-        - ✅ EOD/BOD automated data pipeline
-        - ✅ Adaptive validation system
-        - ✅ Background scanning every 15 minutes
-        - ✅ Telegram/Email alert integration
-        
-        **Data Coverage**
-        - 550+ instruments tracked
-        - 9 timeframes (5min to annual)
-        - Options chain + IV history
-        - Real-time LTP database
-        
-        **Risk Management**
-        - Half-Kelly position sizing
-        - GARCH volatility modeling
-        - Portfolio-level Greeks tracking
-        - Adaptive stop-loss mechanisms
-        """)
+        st.warning("signals.json not found. Run scanner to generate signals.")
 
 # ============================================================================
 # EOD/BOD STATUS DASHBOARD
@@ -1110,6 +1060,7 @@ with sys_col4:
 # ============================================================================
 if is_market_open():
     # Rerun every 5 minutes during market hours
+    import time
     time.sleep(300)
     st.rerun()
 
@@ -1140,3 +1091,42 @@ else:
         <p style='font-size: 12px; color: #B0B0B0; margin-top: 15px;'>© 2025 {PROJECT_NAME} — ALL RIGHTS RESERVED</p>
     </div>
     """, unsafe_allow_html=True)
+
+# ============================================================================
+# ADMIN DASHBOARD - NOTIFICATION LOGS
+# ============================================================================
+with st.sidebar:
+    st.header("🛡️ Admin Dashboard")
+    admin_tab = st.radio("Admin Panel", [
+        "Notification Logs",
+        "User Management",
+        "Channel Health",
+        "System Health",
+        "Signal Management",
+        "Config & Secrets",
+        "Manual Actions"
+    ])
+    if admin_tab == "Notification Logs":
+        if st.button("🔍 Review Notification Logs", type="primary"):
+            from utils.notifications import AdminManagementDashboard
+            dashboard = AdminManagementDashboard()
+            st.text("Log file: " + dashboard.log_path)
+            import io
+            import contextlib
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                dashboard.show_dashboard()
+            st.text(buf.getvalue())
+    elif admin_tab == "User Management":
+        st.info("User management coming soon: view/add/edit/deactivate users, assign roles, reset passwords.")
+    elif admin_tab == "Channel Health":
+        st.info("Channel health coming soon: live status for Email, SMS, WhatsApp, Telegram, test send.")
+    elif admin_tab == "System Health":
+        st.info("System health coming soon: backend service status, error/warning counts, manual health check.")
+    elif admin_tab == "Signal Management":
+        st.info("Signal management coming soon: list/enable/disable strategies, view last signal per strategy.")
+    elif admin_tab == "Config & Secrets":
+        st.info("Config & secrets coming soon: view/edit config values, reload config.")
+    elif admin_tab == "Manual Actions":
+        st.info("Manual actions coming soon: trigger jobs, download/export signals and logs.")
+    st.info("For Shivaansh & Krishaansh — every alert pays their fees!")

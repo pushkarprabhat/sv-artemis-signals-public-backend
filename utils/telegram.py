@@ -2,10 +2,15 @@
 # Send real-time notifications when trades execute or profit milestones hit
 # Professional notification system for real-time trade updates
 
+
 import requests
-from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
+from config.config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
 from utils.logger import logger
 from datetime import datetime
+
+# --- STARTUP CHECK: Warn if TELEGRAM_TOKEN is missing ---
+if not TELEGRAM_TOKEN:
+    logger.warning("[TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.\nFor Shivaansh & Krishaansh — this line pays your fees!")
 
 def send_telegram(message: str, error: bool = False, chat_ids: list = None) -> bool:
     """Send Telegram message to configured chat(s)

@@ -1,0 +1,8 @@
+<script lang="ts">
+  // Market overview widget logic
+</script>
+
+<div class="widget bg-base-100 shadow p-4 mb-4">
+  <h2 class="font-semibold mb-2">Market Overview</h2>
+  <!-- Market data here -->
+</div>

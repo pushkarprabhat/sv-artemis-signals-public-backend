@@ -332,29 +332,66 @@ class BhavcopySignalGenerator:
             }
         }
         
+        # Automatically send notifications for ALL signal types
+        try:
+            from utils.notifications import send_notification
+            for signal_type, signal_list in signals['signals'].items():
+                for signal in signal_list:
+                    try:
+                        send_notification(
+                            strategy=signal.get('symbol', signal_type),
+                            interval='daily',
+                            trade_details=signal,
+                            channel='EMAIL',
+                            now=datetime.now(),
+                            to=None
+                        )
+                    except Exception as e:
+                        print(f"[ERROR] Email notification failed for {signal.get('symbol', signal_type)}: {e}")
+                    try:
+                        send_notification(
+                            strategy=signal.get('symbol', signal_type),
+                            interval='daily',
+                            trade_details=signal,
+                            channel='SMS',
+                            now=datetime.now(),
+                            to=None
+                        )
+                    except Exception as e:
+                        print(f"[ERROR] SMS notification failed for {signal.get('symbol', signal_type)}: {e}")
+                    try:
+                        send_notification(
+                            strategy=signal.get('symbol', signal_type),
+                            interval='daily',
+                            trade_details=signal,
+                            channel='WHATSAPP',
+                            now=datetime.now(),
+                            to=None
+                        )
+                    except Exception as e:
+                        print(f"[ERROR] WhatsApp notification failed for {signal.get('symbol', signal_type)}: {e}")
+        except Exception as e:
+            print(f"[ERROR] Failed to send notifications: {e}")
         return signals
     
     def save_signals(self, signals: Dict) -> bool:
         """
-        Save generated signals to JSON file
-        
+        Save generated signals to JSON file atomically
         Args:
             signals: Signals dict from generate_all_signals()
-        
         Returns:
             True if saved successfully
         """
         try:
             self.signals_file.parent.mkdir(parents=True, exist_ok=True)
-            
-            with open(self.signals_file, 'w') as f:
+            tmp_path = str(self.signals_file) + ".tmp"
+            with open(tmp_path, 'w') as f:
                 json.dump(signals, f, indent=2)
-            
-            print(f"[SAVED] Signals saved to: {self.signals_file}")
+            os.replace(tmp_path, self.signals_file)  # Atomic move
+            print(f"[SAVED] Signals saved atomically to: {self.signals_file}")
             return True
-        
         except Exception as e:
-            print(f"[ERROR] Failed to save signals: {e}")
+            print(f"[ERROR] Failed to save signals atomically: {e}")
             return False
     
     def print_signals_summary(self, signals: Dict):

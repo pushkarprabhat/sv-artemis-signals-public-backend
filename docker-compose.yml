@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    command: uvicorn api.server:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+      - worker
+    ports:
+      - "8000:8000"
+
+  worker:
+    build: .
+    command: celery -A celery_app.celery_app worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "6379:6379"
+
+  frontend:
+    build:
+      context: ../sv-artemis-signals-public-frontend
+    command: npm run dev
+    volumes:
+      - ../sv-artemis-signals-public-frontend:/app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

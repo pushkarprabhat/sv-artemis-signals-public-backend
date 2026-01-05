@@ -342,6 +342,30 @@ def scan_strangle(spot_price: float = None, iv_rank: float = None,
         return None
 
 
+def scan_strangle_setups(symbols: List[str], min_iv_rank: float = 80) -> pd.DataFrame:
+    """
+    Parallel scan for strangle setups across multiple symbols
+    Implemented for ParallelOptionsScanner compatibility.
+    """
+    results = []
+    for symbol in symbols:
+        try:
+            from core.options_chain import get_latest_iv_rank
+            iv_rank = get_latest_iv_rank(symbol)
+            if iv_rank is not None and iv_rank >= min_iv_rank:
+                from core.pairs import load_price
+                price_df = load_price(symbol, "day")
+                if price_df is not None and not price_df.empty:
+                    spot = price_df.iloc[-1]
+                    setup = get_strangle_setup(symbol, spot, iv_rank)
+                    if setup:
+                        results.append(setup)
+        except Exception as e:
+            continue
+            
+    return pd.DataFrame(results) if results else pd.DataFrame()
+
+
 # ============================================================================
 # IV CRUSH DETECTION & EXIT LOGIC (NEW - Task #7 Enhancement)
 # ============================================================================

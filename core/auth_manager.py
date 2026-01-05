@@ -6,10 +6,64 @@ import os
 import requests
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from kiteconnect import KiteConnect
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from config.config import TELEGRAM_TOKEN
 from utils.logger import logger
 
+from typing import Dict, Any, Optional
+
 load_dotenv()
+
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "supersecretkey")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+try:
+    from kiteconnect import KiteConnect
+except ImportError:
+    KiteConnect = None
+    # For Shivaansh & Krishaansh — mock KiteConnect for local/dev
+    class KiteConnect:
+        def __init__(self, api_key=None):
+            pass
+        def set_access_token(self, token):
+            pass
+        def profile(self):
+            return {"user_name": "mock_user"}
+
+
+def create_access_token(data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now() + expires_delta
+    else:
+        expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def decode_access_token(token: str) -> Optional[Dict[str, Any]]:
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        tenant_id = payload.get("tenant_id")
+        if not username or not tenant_id:
+            return None
+        return {"username": username, "tenant_id": tenant_id}
+    except JWTError:
+        return None
 
 
 class AuthenticationManager:
@@ -47,22 +101,15 @@ class AuthenticationManager:
             if profile:
                 self.is_valid = True
                 self.kite = kite_test
-                logger.info(f"[OK] Token is valid. User: {profile.get('user_name', 'Unknown')}")
+                user_name = profile.get("user_name", "Unknown") if isinstance(profile, dict) else "mock_user"
+                logger.info(f"[OK] Token is valid. User: {user_name}")
                 return True
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 401:
-                logger.error("[INVALID] Token is invalid (401 Unauthorized) - Token has expired or is incorrect")
-                self.is_valid = False
-                return False
-            else:
-                logger.error(f"[ERROR] API Error: {e}")
-                return False
         except Exception as e:
             logger.error(f"[FAILED] Token validation failed: {e}")
             self.is_valid = False
             return False
     
-    def check_token_expiry(self) -> dict:
+    def check_token_expiry(self) -> Dict[str, Any]:
         """Check if token is likely expired based on age and validity
         
         Returns:
@@ -125,7 +172,7 @@ class AuthenticationManager:
             self.validate_token()
         return self.kite
     
-    def test_connection(self) -> dict:
+    def test_connection(self) -> Dict[str, Any]:
         """Test Kite connection and retrieve account info
         
         Returns:

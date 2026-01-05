@@ -131,18 +131,21 @@ class UniverseManager:
             return None
     
     def _load_from_cache(self) -> Optional[pd.DataFrame]:
-        """Load universe from disk cache"""
+        """Load universe from disk cache and ensure net_change/change_pct columns"""
         try:
             if not UNIVERSE_CACHE_FILE.exists():
                 logger.debug("No universe cache file found")
                 return None
-            
             df = pd.read_parquet(UNIVERSE_CACHE_FILE)
-            
             # Convert Expiry back to datetime if it was stored as string
             if 'Expiry' in df.columns and df['Expiry'].dtype == 'object':
                 df['Expiry'] = pd.to_datetime(df['Expiry'], errors='coerce')
-            
+            # --- Ensure net_change and change_pct columns are always present and correct ---
+            try:
+                from core.data_manager import DataManager
+                df = DataManager.verify_and_fix_change_pct(df)
+            except Exception as e:
+                logger.warning(f"Could not verify/fix net_change/change_pct: {e}")
             logger.info(f"Loaded universe from cache: {len(df)} instruments")
             return df
         except Exception as e:

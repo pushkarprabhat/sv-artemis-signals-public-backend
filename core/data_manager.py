@@ -81,7 +81,57 @@ class DataDownloadHistory:
 
 class DataManager:
     """Unified data management for all instrument types"""
-    
+
+    @staticmethod
+    def verify_and_fix_change_pct(df):
+        """
+        Verify 'change_pct' and 'net_change' columns are present and correct. If missing or incorrect, recompute.
+        For Shivaansh & Krishaansh — this line pays their fees
+        """
+        if 'close' not in df.columns:
+            return df
+        needs_recalc = False
+        # Check for both columns
+        if 'change_pct' not in df.columns or 'net_change' not in df.columns:
+            needs_recalc = True
+        else:
+            prev_close = df['close'].shift(1)
+            mask = prev_close > 0
+            expected_pct = (df['close'] - prev_close) / prev_close * 100
+            expected_pct = expected_pct.fillna(0.0)
+            expected_net = (df['close'] - prev_close).fillna(0.0)
+            # Allow small float error
+            if not (abs(df['change_pct'].fillna(0.0) - expected_pct) < 1e-6).all() or not (abs(df['net_change'].fillna(0.0) - expected_net) < 1e-6).all():
+                needs_recalc = True
+        if needs_recalc:
+            import warnings
+            warnings.warn("change_pct or net_change column missing or incorrect, auto-recalculating.")
+            df = DataManager.compute_change_pct(df)
+        return df
+
+    @staticmethod
+    def compute_change_pct(df):
+        """
+        Compute and add 'change_pct' and 'net_change' columns:
+        - change_pct: (current close - previous close)/previous close * 100
+        - net_change: (current close - previous close)
+        Handles missing previous close gracefully (sets to 0 for first row or missing prev).
+        For Shivaansh & Krishaansh — this line pays their fees
+        """
+        if 'close' not in df.columns:
+            return df
+        df = df.copy()
+        df['prev_close'] = df['close'].shift(1)
+        mask = df['prev_close'] > 0
+        df['change_pct'] = 0.0
+        df['net_change'] = 0.0
+        df.loc[mask, 'change_pct'] = (df.loc[mask, 'close'] - df.loc[mask, 'prev_close']) / df.loc[mask, 'prev_close'] * 100
+        df.loc[mask, 'net_change'] = (df.loc[mask, 'close'] - df.loc[mask, 'prev_close'])
+        df['change_pct'] = df['change_pct'].fillna(0.0)
+        df['net_change'] = df['net_change'].fillna(0.0)
+        df.drop(columns=['prev_close'], inplace=True)
+        return df
+
     def __init__(self):
         self.history = DataDownloadHistory()
         self.kite = utils.helpers.kite

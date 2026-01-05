@@ -52,11 +52,21 @@ def scan_index_dispersion_pairs(index_symbol="NIFTY", timeframe="day",
             logger.warning(f"Insufficient data for {index_symbol}")
             return pd.DataFrame()
         
-        # Get index constituents (NIFTY 50, BANKNIFTY stocks)
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for index dispersion pairs. Skipping.")
+            return pd.DataFrame()
+
+        # Restrict to Nifty 500 and sector-based selection
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
-        
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
+
         results = []
-        
+
         for _, stock_row in universe.iterrows():
             try:
                 stock_symbol = stock_row['Symbol']
@@ -218,11 +228,21 @@ def scan_momentum_pairs(timeframe="day", top_n=20, lookback_short=20, lookback_l
         DataFrame with momentum pair opportunities
     """
     try:
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for momentum pairs. Skipping.")
+            return pd.DataFrame()
+
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
-        
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
+
         # Calculate momentum for each stock
         momentum_data = []
-        
+
         for _, row in universe.iterrows():
             try:
                 symbol = row['Symbol']
@@ -326,11 +346,21 @@ def scan_ma_crossover_pairs(timeframe="day", top_n=20):
         DataFrame with MA crossover pair opportunities
     """
     try:
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for MA crossover pairs. Skipping.")
+            return pd.DataFrame()
+
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
-        
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
+
         # Calculate MA status for each stock
         ma_data = []
-        
+
         for _, row in universe.iterrows():
             try:
                 symbol = row['Symbol']
@@ -451,11 +481,21 @@ def scan_volatility_breakout_pairs(timeframe="day", top_n=20, bb_period=20, bb_s
         DataFrame with volatility pair opportunities
     """
     try:
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for volatility breakout pairs. Skipping.")
+            return pd.DataFrame()
+
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
-        
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
+
         # Calculate BB status for each stock
         vol_data = []
-        
+
         for _, row in universe.iterrows():
             try:
                 symbol = row['Symbol']
@@ -571,11 +611,21 @@ def scan_correlation_pairs(timeframe="day", top_n=10, corr_threshold=0.8):
     For shorter-term mean reversion trades
     """
     try:
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for correlation pairs. Skipping.")
+            return pd.DataFrame()
+
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
         results = []
-        
+
         symbols = universe['Symbol'].tolist()[:50]  # Limit for performance
-        
+
         for sym1, sym2 in itertools.combinations(symbols, 2):
             p1 = load_price(sym1, timeframe)
             p2 = load_price(sym2, timeframe)
@@ -624,11 +674,21 @@ def scan_sector_rotation_pairs(timeframe="day", top_n=10):
     Strategy 8: Sector rotation - pair strong sector with weak sector
     """
     try:
+        # Only allow intervals >= 15m
+        allowed_intervals = ["15minute", "30minute", "60minute", "day"]
+        if timeframe not in allowed_intervals:
+            logger.warning(f"Interval {timeframe} not allowed for sector rotation pairs. Skipping.")
+            return pd.DataFrame()
+
+        from universe.nifty500 import get_nifty500_symbols, get_nifty500_sector_map
+        nifty500_symbols = set(get_nifty500_symbols())
+        sector_map = get_nifty500_sector_map()
         universe = get_focused_universe(sector="ALL")
-        
+        universe = universe[universe['Symbol'].isin(nifty500_symbols)]
+
         # Calculate sector performance
         sector_perf = {}
-        
+
         for sector in universe['Industry'].unique():
             sector_stocks = universe[universe['Industry'] == sector]['Symbol'].tolist()
             

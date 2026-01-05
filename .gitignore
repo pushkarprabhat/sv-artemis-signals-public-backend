@@ -1,0 +1,109 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+# SvelteKit / Node.js
+node_modules/
+dist/
+build/
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+Icon?
+# Env & Secrets
+.env
+.env.*
+!.env.example
+!.env.test
+# Vite / Build
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+# Paraglide
+src/lib/paraglide
+project.inlang/cache/
+# Test & Reports
+test-results/
+coverage/
+# Logs & Temp
+*.log
+logs/
+*.tmp
+*.bak
+*.swp
+*~
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+# Python (if any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+# Market Data (explicitly excluded)
+marketdata/
+data/
+*.csv
+*.parquet
+*.db
+*.sqlite3
+
+# SvelteKit / Node.js
+node_modules/
+dist/
+build/
+.svelte-kit/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next/
+out/
+.vercel
+.netlify
+
+# Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env.*
+secrets/
+credentials/
+
+# Market Data (explicitly excluded - never commit)
+data/
+marketdata/
+universe.csv
+*.csv
+*.parquet
+*.db
+*.sqlite3
+*.sqlite
+
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

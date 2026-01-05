@@ -192,6 +192,7 @@ def ewma_volatility(returns: pd.Series, span: int = 20) -> float:
         return np.nan
 
 
+
 def india_vix_signal(current_vix: float) -> str:
     """
     India VIX = Fear Gauge of Indian Equities Market
@@ -216,6 +217,38 @@ def india_vix_signal(current_vix: float) -> str:
     except Exception as e:
         logger.debug(f"Error interpreting VIX: {e}")
         return "Unknown VIX reading"
+
+
+def calculate_historical_volatility(symbol: str, days: int = 30) -> float:
+    """Wrapper for historical_volatility with symbol loading"""
+    try:
+        from core.pairs import load_price
+        price_df = load_price(symbol, "day")
+        if price_df is None or price_df.empty:
+            return 0.20 # Fallback 20%
+        # Handle if price_df is Series or DataFrame
+        if isinstance(price_df, pd.DataFrame):
+            returns = price_df['close'].pct_change().dropna()
+        else:
+            returns = price_df.pct_change().dropna()
+        return historical_volatility(returns, window=days)
+    except Exception as e:
+        return 0.20
+
+def calculate_implied_volatility(symbol: str, days_to_expiry: int = 30) -> float:
+    """Fetch recent IV for symbol"""
+    try:
+        from config import OPTION_IV_HISTORY_DIR
+        file_path = OPTION_IV_HISTORY_DIR / f"{symbol}_iv_history.csv"
+        if file_path.exists():
+            df = pd.read_csv(file_path)
+            if not df.empty and 'atm_iv' in df.columns:
+                return df['atm_iv'].iloc[-1]
+            elif not df.empty and 'iv' in df.columns:
+                return df['iv'].iloc[-1]
+        return 0.15 # Fallback 15%
+    except Exception as e:
+        return 0.15
 
 
 def volatility_regime(hv: float, garch: float, ewma: float) -> str:

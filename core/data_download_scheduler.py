@@ -278,27 +278,25 @@ class DataDownloadScheduler:
             return MarketSession.CLOSED
     
     def _schedule_batch_downloads(self, symbols: List[str]):
-        """Schedule downloads for a batch of symbols"""
-        # Import download function
+        """Schedule downloads for a batch of symbols and trigger signal scan after completion"""
         try:
             from core.downloader import download_price_data
-        except ImportError:
-            logger.error("Failed to import download_price_data")
+            from core.pairs import scan_all_strategies
+            import json
+            import pandas as pd
+            from config import SIGNALS_PATH, SIGNAL_SCAN_INTERVALS
+        except ImportError as e:
+            logger.error(f"Failed to import download or signal modules: {e}")
             return
-        
         if self.on_download_start:
             self.on_download_start({
                 'total_symbols': len(symbols),
                 'timestamp': datetime.now().isoformat(),
             })
-        
-        # Submit download tasks
         futures = {}
         for symbol in symbols:
             future = self.executor.submit(self._download_symbol_with_retry, symbol)
             futures[symbol] = future
-        
-        # Wait for completion
         completed = 0
         for symbol, future in futures.items():
             try:
@@ -307,18 +305,15 @@ class DataDownloadScheduler:
                     self.last_download_times[symbol] = datetime.now()
                     self.error_counts[symbol] = 0
                     completed += 1
-                    
                     if self.on_status_update:
                         self.on_status_update({
                             'symbol': symbol,
                             'status': 'complete',
                             'timestamp': datetime.now().isoformat(),
                         })
-            
             except Exception as e:
                 self.error_counts[symbol] = self.error_counts.get(symbol, 0) + 1
                 logger.error(f"Download failed for {symbol}: {e}")
-                
                 if self.on_error:
                     self.on_error({
                         'symbol': symbol,
@@ -326,10 +321,7 @@ class DataDownloadScheduler:
                         'error_count': self.error_counts[symbol],
                         'timestamp': datetime.now().isoformat(),
                     })
-        
-        # Save state
         self._save_state()
-        
         if self.on_download_complete:
             self.on_download_complete({
                 'total_symbols': len(symbols),
@@ -337,6 +329,30 @@ class DataDownloadScheduler:
                 'failed': len(symbols) - completed,
                 'timestamp': datetime.now().isoformat(),
             })
+        # === AUTOMATED SIGNAL SCAN & ENRICHMENT ===
+        try:
+            # For Shivaansh & Krishaansh — this line pays their fees
+            logger.info("[AUTOMATION] Running scan_all_strategies after data refresh...")
+            all_signals = []
+            for tf in SIGNAL_SCAN_INTERVALS:
+                try:
+                    df = scan_all_strategies(tf=tf)
+                    if df is not None and not df.empty:
+                        df['timeframe'] = tf
+                        all_signals.append(df)
+                except Exception as e:
+                    logger.error(f"Signal scan failed for {tf}: {e}")
+            if all_signals:
+                signals_df = pd.concat(all_signals, ignore_index=True)
+                signals_df['scan_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                signals_df['source'] = 'DataDownloadScheduler'
+                signals_df.to_json(SIGNALS_PATH, orient='records', indent=2)
+                logger.info(f"[AUTOMATION] Signals saved to {SIGNALS_PATH} ({len(signals_df)} signals)")
+            else:
+                logger.warning("[AUTOMATION] No signals generated after data refresh.")
+        except Exception as e:
+            logger.error(f"[AUTOMATION] Signal enrichment failed: {e}")
+        # === END AUTOMATION ===
     
     def _download_symbol_with_retry(self, symbol: str) -> bool:
         """Download a symbol with retry logic"""

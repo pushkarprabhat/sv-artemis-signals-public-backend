@@ -49,7 +49,7 @@ def display_index_card(symbol: str, ltp: float, ohlcv: Dict, metadata: Dict):
             {metadata.get('full_name', symbol)}
         </div>
         <div style="color: #FFFFFF; font-size: 28px; font-weight: bold; margin: 10px 0;">
-            {color} {ltp:,.2f}
+            {color} {ltp:.2f}
         </div>
         <div style="color: {'#4CAF50' if change >= 0 else '#F44336'}; font-size: 16px; font-weight: bold;">
             {arrow} {change:+,.2f} ({change_pct:+.2f}%)
@@ -184,10 +184,10 @@ def display_constituent_table(index_name: str, full_index_name: str):
     # Format for display
     display_df = pd.DataFrame({
         'Symbol': df['symbol'],
-        'Open': df['open'].apply(lambda x: f"₹{x:,.2f}"),
-        'High': df['high'].apply(lambda x: f"₹{x:,.2f}"),
-        'Low': df['low'].apply(lambda x: f"₹{x:,.2f}"),
-        'LTP': df['ltp'].apply(lambda x: f"₹{x:,.2f}"),
+        'Open': df['open'].apply(lambda x: f"{x:.2f}"),
+        'High': df['high'].apply(lambda x: f"{x:.2f}"),
+        'Low': df['low'].apply(lambda x: f"{x:.2f}"),
+        'LTP': df['ltp'].apply(lambda x: f"{x:.2f}"),
         'Volume': df['volume'].apply(format_large_number),
         'Change': df['change_pct'].apply(lambda x: f"{x:+.2f}%")
     })
@@ -239,10 +239,11 @@ def display_quick_metrics():
     """Display quick system metrics"""
     col1, col2, col3, col4 = st.columns(4)
     
+    from config import PAPER_CAPITAL
     with col1:
         st.metric(
             "💰 Capital",
-            "₹1,00,000",
+            f"₹{PAPER_CAPITAL:,}",
             delta=None
         )
     

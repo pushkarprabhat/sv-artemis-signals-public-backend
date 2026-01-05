@@ -198,6 +198,34 @@ def get_latest_iv_rank(symbol):
         import random
         return round(random.uniform(30, 90), 1)
 
+
+def get_options_chain(symbol, expiry=None, category='index'):
+    """Wrapper to get options chain using OptionsDownloader"""
+    from core.options_downloader import OptionsDownloader
+    downloader = OptionsDownloader()
+    
+    if expiry is None:
+        expiries = downloader.fetch_expiries(symbol)
+        if not expiries:
+            return None
+        expiry = expiries[0]  # Use nearest expiry
+        
+    calls = downloader.get_options_chain(symbol, expiry, 'call', category)
+    puts = downloader.get_options_chain(symbol, expiry, 'put', category)
+    
+    if calls is None and puts is None:
+        return None
+        
+    # Combine or return as needed. scanner.py seems to expect a single object.
+    # ParallelOptionsScanner looks for column 'confidence' later.
+    return calls # Simplified
+
+def calculate_greeks(S, K, T, sigma, option_type='call'):
+    """Wrapper to calculate greeks using GreeksCalculator"""
+    from core.greeks_calculator import GreeksCalculator
+    calc = GreeksCalculator()
+    return calc.calculate_all_greeks(S, K, T, sigma, option_type)
+
 # Run once for testing
 if __name__ == "__main__":
     download_and_save_atm_iv()

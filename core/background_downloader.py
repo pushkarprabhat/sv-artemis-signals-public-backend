@@ -297,22 +297,24 @@ class BackgroundDownloader:
         return []
     
     def _execute_downloads(self, symbols: List[str]):
-        """Execute parallel downloads for symbols"""
+        """Execute parallel downloads for symbols and trigger signal scan after completion"""
+        try:
+            from core.pairs import scan_all_strategies
+            import json
+            import pandas as pd
+            from config import SIGNALS_PATH, SIGNAL_SCAN_INTERVALS
+        except ImportError as e:
+            logger.error(f"Failed to import signal modules: {e}")
+            return
         if not self.executor:
             return
-        
         futures = {}
-        
         for symbol in symbols:
             job_id = f"{symbol}_{datetime.now().timestamp()}"
             job = DownloadJob(job_id, symbol, "NSE", self.download_intervals)
             self.jobs[job_id] = job
-            
-            # Submit to executor
             future = self.executor.submit(self._download_symbol, job)
             futures[future] = job_id
-        
-        # Wait for completion
         completed = 0
         for future in as_completed(futures):
             job_id = futures[future]
@@ -325,10 +327,33 @@ class BackgroundDownloader:
                 logger.error(f"Download failed for {job_id}: {e}")
                 self.jobs[job_id].error = str(e)
                 self.jobs[job_id].status = DownloadStatus.ERROR
-            
             completed += 1
             if self.on_job_update:
                 self.on_job_update(self.jobs[job_id].to_dict())
+        # === AUTOMATED SIGNAL SCAN & ENRICHMENT ===
+        try:
+            # For Shivaansh & Krishaansh — this line pays their fees
+            logger.info("[AUTOMATION] Running scan_all_strategies after background download...")
+            all_signals = []
+            for tf in SIGNAL_SCAN_INTERVALS:
+                try:
+                    df = scan_all_strategies(tf=tf)
+                    if df is not None and not df.empty:
+                        df['timeframe'] = tf
+                        all_signals.append(df)
+                except Exception as e:
+                    logger.error(f"Signal scan failed for {tf}: {e}")
+            if all_signals:
+                signals_df = pd.concat(all_signals, ignore_index=True)
+                signals_df['scan_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                signals_df['source'] = 'BackgroundDownloader'
+                signals_df.to_json(SIGNALS_PATH, orient='records', indent=2)
+                logger.info(f"[AUTOMATION] Signals saved to {SIGNALS_PATH} ({len(signals_df)} signals)")
+            else:
+                logger.warning("[AUTOMATION] No signals generated after background download.")
+        except Exception as e:
+            logger.error(f"[AUTOMATION] Signal enrichment failed: {e}")
+        # === END AUTOMATION ===
     
     def _download_symbol(self, job: DownloadJob) -> bool:
         """Download data for a single symbol"""

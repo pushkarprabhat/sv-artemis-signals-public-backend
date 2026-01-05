@@ -23,6 +23,24 @@ class Position:
     take_profit: float
     current_price: float
     metadata: Dict[str, Any] = field(default_factory=dict)
+    # For SEBI Delta-Based OI (FutEq OI)
+    @property
+    def delta(self) -> float:
+        """Return position delta (1 for futures, option delta from metadata, sign for direction)"""
+        # Futures: delta = +1 (long), -1 (short)
+        if self.metadata.get('instrument_type', '').lower() == 'future':
+            return 1.0 if self.position_type == PositionType.LONG else -1.0
+        # Options: delta from metadata (should be set at entry)
+        elif self.metadata.get('instrument_type', '').lower() == 'option':
+            base_delta = self.metadata.get('delta', 0.0)
+            return base_delta if self.position_type == PositionType.LONG else -base_delta
+        # Default: treat as cash/stock (delta 1)
+        return 1.0 if self.position_type == PositionType.LONG else -1.0
+
+    @property
+    def fut_eq_oi(self) -> float:
+        """Future Equivalent OI (SEBI Delta-Based OI)"""
+        return self.quantity * self.delta
     
     @property
     def current_value(self) -> float:
@@ -103,6 +121,14 @@ class Portfolio:
     # ========================================================================
     # POSITION MANAGEMENT
     # ========================================================================
+
+    def get_fut_eq_oi(self) -> float:
+        """Aggregate FutEq OI (Delta-Based OI) across all positions (SEBI rule)"""
+        return sum([p.fut_eq_oi for p in self.positions.values()])
+
+    def get_fut_eq_oi_by_symbol(self) -> Dict[str, float]:
+        """FutEq OI by symbol (SEBI rule)"""
+        return {symbol: p.fut_eq_oi for symbol, p in self.positions.items()}
     
     def add_position(
         self,

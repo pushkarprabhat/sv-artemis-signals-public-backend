@@ -1,0 +1,22 @@
+{
+  "name": "artemis-signals-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@sveltejs/kit": "next",
+    "svelte": "^4.0.0",
+    "@lucia-auth/sveltekit": "latest",
+    "@razorpay/razorpay-js": "latest",
+    "tailwindcss": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@sveltejs/adapter-auto": "next",
+    "postcss": "^8.0.0",
+    "autoprefixer": "^10.0.0"
+  }
+}

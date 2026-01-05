@@ -1,14 +1,5 @@
-"""
-Database Models for Universe Data Management
-
-Stores:
-- Universe snapshots (periodic exports from Kite)
-- Universe logs (refresh history and operations)
-- Universe anomalies (detected changes, new/delisted symbols)
-"""
-
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, Float, JSON, Boolean, ForeignKey, create_engine
+from sqlalchemy import Column, Integer, String, Text, DateTime, Float, JSON, Boolean, ForeignKey, create_engine, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -17,6 +8,29 @@ from sqlalchemy.orm import relationship, sessionmaker
 # ============================================================================
 
 Base = declarative_base()
+
+# --- SAAS USER MODEL ---
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    tenant_id = Column(String(64), nullable=False, index=True)  # Multi-tenancy: org/tenant
+    username = Column(String(64), unique=True, nullable=False)
+    email = Column(String(128), unique=True, nullable=False)
+    plan_id = Column(String(32), nullable=False)
+    plan_expiry = Column(DateTime)
+    is_active = Column(Boolean, default=True)
+    razorpay_subscription_id = Column(String(64), nullable=True)
+    hashed_password = Column(String(128), nullable=False)  # Secure password for JWT
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+"""
+Database Models for Universe Data Management
+
+Stores:
+- Universe snapshots (periodic exports from Kite)
+- Universe logs (refresh history and operations)
+- Universe anomalies (detected changes, new/delisted symbols)
+"""
 
 # ============================================================================
 # MODELS
@@ -31,7 +45,8 @@ class UniverseSnapshot(Base):
     __tablename__ = 'universe_snapshots'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    
+    tenant_id = Column(String(64), nullable=False, index=True)
+
     # Snapshot metadata
     total_count = Column(Integer, nullable=False)  # Total instruments in snapshot
     segments = Column(Text, nullable=True)  # JSON: segment -> count mapping
@@ -76,6 +91,7 @@ class UniverseAnomaly(Base):
     __tablename__ = 'universe_anomalies'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
     
     # Reference to snapshot
     snapshot_id = Column(Integer, ForeignKey('universe_snapshots.id'), nullable=False, index=True)
@@ -116,6 +132,7 @@ class UniverseLog(Base):
     __tablename__ = 'universe_logs'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
     
     # Reference to snapshot (nullable for system-level logs)
     snapshot_id = Column(Integer, ForeignKey('universe_snapshots.id'), nullable=True)
@@ -169,6 +186,7 @@ class UniverseChangeLog(Base):
     __tablename__ = 'universe_change_logs'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
     
     # Change information
     symbol = Column(String(50), nullable=False, index=True)  # Trading symbol
@@ -208,6 +226,7 @@ class UniverseStatistics(Base):
     __tablename__ = 'universe_statistics'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
     
     # Timestamp of the snapshot these stats are for
     snapshot_id = Column(Integer, ForeignKey('universe_snapshots.id'), nullable=False, unique=True)
@@ -259,16 +278,9 @@ class DataAudit(Base):
     Tracks validation results, completeness, accuracy scores
     """
     __tablename__ = 'data_audits'
-    __table_args__ = (
-        {'indexes': [
-            {'name': 'idx_symbol_timeframe_ts', 'columns': ['symbol', 'timeframe', 'audit_timestamp']},
-            {'name': 'idx_validation_score', 'columns': ['validation_score']},
-            {'name': 'idx_symbol', 'columns': ['symbol']},
-            {'name': 'idx_timeframe', 'columns': ['timeframe']},
-        ]},
-    )
-    
     id = Column(Integer, primary_key=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
+    
     symbol = Column(String(20), nullable=False, index=True)
     timeframe = Column(String(20), nullable=False, index=True)
     instrument_token = Column(String(50), index=True)
@@ -304,14 +316,9 @@ class PendingOHLCVRecord(Base):
     Records pending retry with exponential backoff
     """
     __tablename__ = 'pending_ohlcv'
-    __table_args__ = (
-        {'indexes': [
-            {'name': 'idx_next_retry', 'columns': ['next_retry_ts']},
-            {'name': 'idx_symbol_timeframe', 'columns': ['symbol', 'timeframe']},
-        ]},
-    )
-    
     id = Column(Integer, primary_key=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
+    
     symbol = Column(String(20), nullable=False, index=True)
     timeframe = Column(String(20), nullable=False, index=True)
     instrument_token = Column(String(50))
@@ -335,14 +342,9 @@ class CorporateActionLog(Base):
     Tracks what adjustments have been applied to each symbol
     """
     __tablename__ = 'corporate_action_logs'
-    __table_args__ = (
-        {'indexes': [
-            {'name': 'idx_symbol_date', 'columns': ['symbol', 'action_date']},
-            {'name': 'idx_applied', 'columns': ['applied']},
-        ]},
-    )
-    
     id = Column(Integer, primary_key=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
+    
     symbol = Column(String(20), nullable=False, index=True)
     
     # Action type: dividend, split, bonus
@@ -371,14 +373,9 @@ class AdjustmentLog(Base):
     Records backward adjustments for corporate actions
     """
     __tablename__ = 'adjustment_logs'
-    __table_args__ = (
-        {'indexes': [
-            {'name': 'idx_symbol_timeframe', 'columns': ['symbol', 'timeframe']},
-            {'name': 'idx_applied_date', 'columns': ['applied_date']},
-        ]},
-    )
-    
     id = Column(Integer, primary_key=True)
+    tenant_id = Column(String(64), nullable=False, index=True)
+    
     symbol = Column(String(20), nullable=False, index=True)
     timeframe = Column(String(20), nullable=False, index=True)
     

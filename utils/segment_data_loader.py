@@ -71,6 +71,8 @@ class SegmentDataLoader:
             # Ensure datetime index
             if not isinstance(df.index, pd.DatetimeIndex):
                 df.index = pd.to_datetime(df.index)
+            from core.data_manager import DataManager
+            df = DataManager.verify_and_fix_change_pct(df)
             return df.sort_index()
         except Exception as e:
             print(f"Error loading commodity data for {symbol}: {e}")
@@ -89,6 +91,8 @@ class SegmentDataLoader:
             # Ensure datetime index
             if not isinstance(df.index, pd.DatetimeIndex):
                 df.index = pd.to_datetime(df.index)
+            from core.data_manager import DataManager
+            df = DataManager.verify_and_fix_change_pct(df)
             return df.sort_index()
         except Exception as e:
             print(f"Error loading forex data for {symbol}: {e}")
@@ -107,6 +111,8 @@ class SegmentDataLoader:
             # Ensure datetime index
             if not isinstance(df.index, pd.DatetimeIndex):
                 df.index = pd.to_datetime(df.index)
+            from core.data_manager import DataManager
+            df = DataManager.verify_and_fix_change_pct(df)
             return df.sort_index()
         except Exception as e:
             print(f"Error loading index data for {symbol}: {e}")
@@ -125,6 +131,8 @@ class SegmentDataLoader:
             # Ensure datetime index
             if not isinstance(df.index, pd.DatetimeIndex):
                 df.index = pd.to_datetime(df.index)
+            from core.data_manager import DataManager
+            df = DataManager.verify_and_fix_change_pct(df)
             return df.sort_index()
         except Exception as e:
             print(f"Error loading equity data for {symbol}: {e}")
