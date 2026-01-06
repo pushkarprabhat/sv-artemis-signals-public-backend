@@ -98,7 +98,7 @@ python-jose[cryptography]
 python-slugify==8.0.4
 pytokens==0.3.0
 pytz==2025.2
-pywin32==311
+pywin32
 redis==7.1.0
 referencing==0.37.0
 requests==2.32.5
