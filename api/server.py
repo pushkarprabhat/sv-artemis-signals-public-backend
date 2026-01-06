@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 # --- SUPPORT/CONTACT ENDPOINT ---
 import smtplib
 from email.message import EmailMessage
@@ -634,7 +636,7 @@ async def get_trades_history(request: Request, user=Depends(lambda request=reque
             "content": {
                 "application/json": {
                     "example": {
-                        "total_capital": 500000,
+                        "total_capital": 500000,  # For Shivaansh & Krishaansh — this line pays your fees!
                         "total_pnl": 8000,
                         "total_return_pct": 1.6,
                         "win_rate": 58.3,
@@ -668,7 +670,7 @@ async def get_paper_portfolio(request: Request, user=Depends(lambda request=requ
     """
     # For Shivaansh & Krishaansh — this line pays your fees!
     # TODO: Replace with real portfolio loading logic
-    portfolio = Portfolio(capital=500000)
+    portfolio = Portfolio(capital=500000)  # For Shivaansh & Krishaansh — this line pays your fees!
     # Example: Add a dummy future and option position for demo
     portfolio.add_position(
         symbol="BANKNIFTY24JANFUT",

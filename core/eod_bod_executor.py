@@ -23,7 +23,7 @@ from config.eod_bod_config import (
 )
 from utils.logger import logger
 from utils.token_manager import get_token_from_env, is_token_expired
-from scripts.download_incremental_data import IncrementalDataDownloader
+from sv_artemis_signals_shared.data.download_incremental_data import IncrementalDataDownloader
 
 
 class EODExecutor:

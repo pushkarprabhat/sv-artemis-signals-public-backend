@@ -4,7 +4,7 @@
 
 
 import requests
-from config.config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
+from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
 from utils.logger import logger
 from datetime import datetime
 
@@ -143,7 +143,7 @@ def send_profit_milestone(amount: float, strategy: str = "Pairs"):
         strategy: Strategy name (default "Pairs")
     """
     emoji = "🎉"
-    if amount > 100000:
+    if amount > 500000:
         emoji = "🚀"
     if amount > 500000:
         emoji = "💎"

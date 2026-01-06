@@ -165,3 +165,49 @@ For Shivaansh & Krishaansh — this line pays your fees!
 
 2026-01-05 22:44:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
 For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 00:22:18 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 09:17:25 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 09:18:58 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+2026-01-06 10:17:42 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+2026-01-06 11:09:24 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+2026-01-06 11:09:46 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+
+2026-01-06 11:09:46 ERROR    [Artemis Signals] Failed to init paper trading: [Errno 2] No such file or directory: 'D:\\TheiaOne_Programs\\sv-artemis-signals-platform\\sv-artemis-signals-public-backend\\strategies\\paper_trading_manager.py'
+
+2026-01-06 11:14:21 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 11:15:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 11:16:33 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-06 11:29:04 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+2026-01-06 11:29:18 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+
+2026-01-06 11:29:18 ERROR    [Artemis Signals] Failed to init paper trading: [Errno 2] No such file or directory: 'D:\\TheiaOne_Programs\\sv-artemis-signals-platform\\sv-artemis-signals-public-backend\\strategies\\paper_trading_manager.py'
+2026-01-06 11:29:18 INFO     [Artemis Signals] ✅ LTP Database initialized
+
+2026-01-06 21:32:46 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+2026-01-06 21:33:09 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+
+2026-01-06 21:33:09 ERROR    [Artemis Signals] Failed to init paper trading: [Errno 2] No such file or directory: 'D:\\TheiaOne_Programs\\sv-artemis-signals-platform\\sv-artemis-signals-public-backend\\strategies\\paper_trading_manager.py'
+2026-01-06 21:33:09 INFO     [Artemis Signals] ✅ LTP Database initialized
+2026-01-06 21:33:09 INFO     [Artemis Signals] [STARTUP] Initializing EOD/BOD Scheduler...
+2026-01-06 21:33:09 INFO     [Artemis Signals] ⚙️ Setting up scheduled jobs...
+2026-01-06 21:33:09 INFO     [Artemis Signals]    ✅ BOD job scheduled for 07:00 AM IST (Mon-Fri)
+2026-01-06 21:33:09 INFO     [Artemis Signals]    ✅ EOD job scheduled for 17:55 PM IST (Mon-Fri)
+2026-01-06 21:33:09 INFO     [Artemis Signals] 🚀 SCHEDULER STARTED
+2026-01-06 21:33:09 INFO     [Artemis Signals]    Jobs: 2
+2026-01-06 21:33:09 INFO     [Artemis Signals] [OK] EOD/BOD Scheduler started successfully!
+2026-01-06 21:33:09 INFO     [Artemis Signals]   ✅ BOD scheduled: 07:00 AM IST (Market pre-open)
+2026-01-06 21:33:09 INFO     [Artemis Signals]   ✅ EOD scheduled: 05:55 PM IST (Market close + 5 min buffer)

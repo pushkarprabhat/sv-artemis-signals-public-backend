@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from config.config import TELEGRAM_TOKEN
+from config import TELEGRAM_TOKEN
 from utils.logger import logger
 
 from typing import Dict, Any, Optional

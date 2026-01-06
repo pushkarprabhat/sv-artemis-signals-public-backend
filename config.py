@@ -1,3 +1,5 @@
+# === MODE SETTINGS ===
+COMMERCIAL_MODE = bool(int(os.environ.get('COMMERCIAL_MODE', '0')))
 # === NOTIFICATION SETTINGS ===
 EMAIL_CONFIG = {
 	'sender_email': os.environ.get('NOTIFICATION_EMAIL', 'noreply@artemis-signals.com'),

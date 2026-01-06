@@ -1,22 +1,88 @@
+# Import get_ltp_database for LTP management
+from core.ltp_database import get_ltp_database
 # main.py — ARTEMIS SIGNALS
 # Professional algorithmic trading platform with adaptive validation + EOD/BOD scheduler
 # Institutional-grade quantitative trading system
+
+
 
 import streamlit as st
 import sys
 import os
 
-# --- ENFORCE CORRECT PYTHONPATH AND WORKING DIRECTORY ---
+from config import COMMERCIAL_MODE
+
+import pathlib
+from dotenv import load_dotenv
 EXPECTED_ROOT = os.path.abspath(os.path.dirname(__file__))
+WORKSPACE_ROOT = os.path.abspath(os.path.join(EXPECTED_ROOT, '..'))
+cwd = os.path.abspath(os.getcwd())
+pythonpath = os.environ.get('PYTHONPATH', '')
+
+# Robust import of shared timeframes (after EXPECTED_ROOT is defined)
+PRIVATE_PATH = os.path.abspath(os.path.join(EXPECTED_ROOT, '..', 'sv-artemis-signals-private'))
+if PRIVATE_PATH not in sys.path:
+    sys.path.insert(0, PRIVATE_PATH)
+
+try:
+    from shared.config import AVAILABLE_TIMEFRAMES as TIMEFRAMES
+except ImportError as e:
+    print("[FATAL] Could not import AVAILABLE_TIMEFRAMES from shared config.\n" \
+          f"Checked path: {PRIVATE_PATH}\n" \
+          f"sys.path: {sys.path}\n" \
+          f"Error: {e}\n" \
+          "Please check your workspace structure and PYTHONPATH.\n")
+    sys.exit(1)
+
+
+# Import set_kite for KiteConnect global instance
+from utils.helpers import set_kite
+
+# Import project branding
+PRIVATE_CONFIG_PATH = os.path.abspath(os.path.join(EXPECTED_ROOT, '..', 'sv-artemis-signals-private'))
+if PRIVATE_CONFIG_PATH not in sys.path:
+    sys.path.insert(0, PRIVATE_CONFIG_PATH)
+try:
+    from config import PROJECT_NAME
+except ImportError:
+    PROJECT_NAME = "Artemis Signals"
+PROJECT_TAGLINE = "Quantitative Trading Automation for Indian Markets"
+PROJECT_TAGLINE2 = "Family-focused, Modular, and Ultra-Professional — For Shivaansh & Krishaansh"
+
+import pathlib
+EXPECTED_ROOT = os.path.abspath(os.path.dirname(__file__))
+WORKSPACE_ROOT = os.path.abspath(os.path.join(EXPECTED_ROOT, '..'))
+cwd = os.path.abspath(os.getcwd())
+pythonpath = os.environ.get('PYTHONPATH', '')
+
+# Allow running from backend dir or workspace root, as long as imports resolve
 if EXPECTED_ROOT not in sys.path:
     sys.path.insert(0, EXPECTED_ROOT)
-if os.environ.get('PYTHONPATH', '').split(os.pathsep)[0] != EXPECTED_ROOT:
-    print(f"\n[ERROR] Please run this script from the project root and set PYTHONPATH to: {EXPECTED_ROOT}\n\nExample:\n  set PYTHONPATH={EXPECTED_ROOT}\n  cd {EXPECTED_ROOT}\n  python main.py\n\nFor Shivaansh & Krishaansh — this line pays your fees!\n")
+if WORKSPACE_ROOT not in sys.path:
+    sys.path.insert(0, WORKSPACE_ROOT)
+
+def _can_import_backend():
+    try:
+        import config
+        return True
+    except ImportError:
+        return False
+
+if not _can_import_backend():
+    print(f"\n[ERROR] Could not import backend modules.\n" \
+          f"Current working directory: {cwd}\n" \
+          f"PYTHONPATH: {pythonpath}\n" \
+          f"sys.path: {sys.path}\n" \
+          f"\nTry running from either:\n  cd {EXPECTED_ROOT} && python main.py\n  OR\n  cd {WORKSPACE_ROOT} && python sv-artemis-signals-public-backend/main.py\n\nFor Shivaansh & Krishaansh — this line pays your fees!\n")
     sys.exit(1)
-import pandas as pd
-import numpy as np
-from datetime import datetime
-from kiteconnect import KiteConnect
+
+# ============================================================================
+# MAIN TABS (move all dashboard logic below this point into tab blocks)
+# ============================================================================
+if not COMMERCIAL_MODE:
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Info", "🚦 Active Signals"])
+else:
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Data Engine", "🎯 Strategy Scanner", "📈 Backtesting", "📊 System Metrics", "🚦 Active Signals"])
 
 with tab1:
     st.header("📊 Data Engine — Your Foundation")
@@ -29,7 +95,6 @@ with tab1:
                     # ...existing code...
                 except Exception as e:
                     st.error(f"❌ Download failed: {e}")
-
     with col2:
         if st.button("📊 DOWNLOAD TODAY'S OPTION CHAIN + IV", type="primary"):
             with st.spinner("🔨 Building edge..."):
@@ -80,7 +145,9 @@ with tab3:
             st.warning("⚠️ Enter pair as SYMBOL1-SYMBOL2")
 
 with tab4:
-    # ...existing code for system info/metrics...
+    # System Info/System Metrics tab placeholder (add actual logic as needed)
+    st.header("📊 System Info / Metrics")
+    st.info("System metrics and info will be displayed here.")
 
 with tab5:
     st.header("🚦 Active Signals — Real-Time")
@@ -97,6 +164,30 @@ with tab5:
             st.info("No active signals found.")
     else:
         st.warning("signals.json not found. Run scanner to generate signals.")
+
+
+# Scheduler import and availability detection (robust)
+try:
+    from core.scheduler import SchedulerService
+    SCHEDULER_AVAILABLE = True
+except Exception as e:
+    from utils.logger import logger
+    logger.warning(f"Scheduler not available: {e}")
+    SCHEDULER_AVAILABLE = False
+
+import pandas as pd
+import numpy as np
+from datetime import datetime
+from kiteconnect import KiteConnect
+from utils.logger import logger
+
+# Patch paper trading manager import to use shared/private strategies path
+PRIVATE_STRATEGIES_PATH = os.path.abspath(os.path.join(EXPECTED_ROOT, '..', 'sv-artemis-signals-private', 'strategies'))
+if PRIVATE_STRATEGIES_PATH not in sys.path:
+    sys.path.insert(0, PRIVATE_STRATEGIES_PATH)
+
+
+    # All tab logic is now after st.tabs() assignment above
 
 # ============================================================================
 # ZERODHA LOGIN
@@ -366,7 +457,7 @@ with st.sidebar:
     st.markdown("#### 📋 Reports")
     if st.button("🌅 Opening Bell", use_container_width=True, key="nav_opening"):
         st.switch_page("pages/opening_bell_report.py")
-    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing":
+    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing"):
         st.switch_page("pages/closing_bell_report.py")
     if st.button("📧 Email Reports", use_container_width=True, key="nav_email"):
         st.switch_page("pages/email_subscriptions.py")
@@ -927,24 +1018,7 @@ with tab3:
 
 
 
-with tab4:
-    # ...existing code for system info/metrics...
-
-with tab5:
-    st.header("🚦 Active Signals — Real-Time")
-    import os, json
-    signals_path = os.path.join(os.path.dirname(__file__), 'marketdata', 'signals.json')
-    if os.path.exists(signals_path):
-        with open(signals_path, 'r', encoding='utf-8') as f:
-            signals = json.load(f)
-        if signals:
-            import pandas as pd
-            df = pd.DataFrame(signals)
-            st.dataframe(df, use_container_width=True)
-        else:
-            st.info("No active signals found.")
-    else:
-        st.warning("signals.json not found. Run scanner to generate signals.")
+    # Removed duplicate/old tab4 and tab5 blocks after refactor
 
 # ============================================================================
 # EOD/BOD STATUS DASHBOARD
