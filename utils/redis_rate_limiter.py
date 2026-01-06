@@ -37,11 +37,25 @@ class RedisRateLimiter:
             logger.warning(f"[RATE LIMIT] Blocked {key}: {count}/{max_calls} in {period}s")
         return allowed
 
+
     def get_count(self, key: str, period: int) -> int:
         redis_key = f"{self.prefix}{key}"
         now = int(time.time())
         self.redis.zremrangebyscore(redis_key, 0, now - period)
         return self.redis.zcard(redis_key)
+
+    def get_all_usage(self, period: int = 3600) -> dict:
+        """
+        Returns usage counts for all keys in the current period.
+        """
+        usage = {}
+        try:
+            for key in self.redis.scan_iter(f"{self.prefix}*"):
+                count = self.get_count(key.replace(self.prefix, ""), period)
+                usage[key.replace(self.prefix, "")] = count
+        except Exception as e:
+            logger.error(f"[USAGE_METERING] Failed to fetch usage: {e}")
+        return usage
 
     def reset(self, key: str):
         redis_key = f"{self.prefix}{key}"

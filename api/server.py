@@ -1,3 +1,165 @@
+# --- SUPPORT/CONTACT ENDPOINT ---
+import smtplib
+from email.message import EmailMessage
+
+@app.post("/api/v1/support/contact", tags=["support"])
+def support_contact(email: str, message: str):
+    """Receives support/contact requests and emails them to support address."""
+    SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL", "support@artemissignals.in")
+    SMTP_HOST = os.getenv("SMTP_HOST", "localhost")
+    SMTP_PORT = int(os.getenv("SMTP_PORT", 25))
+    SMTP_USER = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+    try:
+        msg = EmailMessage()
+        msg["Subject"] = "Artemis Signals Support Request"
+        msg["From"] = email
+        msg["To"] = SUPPORT_EMAIL
+        msg.set_content(f"Support request from: {email}\n\nMessage:\n{message}")
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+            if SMTP_USER and SMTP_PASSWORD:
+                server.starttls()
+                server.login(SMTP_USER, SMTP_PASSWORD)
+            server.send_message(msg)
+        logger.info(f"[SUPPORT] Support request from {email} sent to {SUPPORT_EMAIL}")
+        return {"ok": True}
+    except Exception as e:
+        logger.error(f"[SUPPORT] Failed to send support request: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send support request.")
+from services.razorpay_sync import get_db_session, get_subscription_status
+from services.subscription_manager import SubscriptionManager
+from core.db_models import User
+from datetime import datetime, timedelta
+import secrets
+import hashlib
+# --- BILLING & ONBOARDING ENDPOINTS ---
+
+# 1. Razorpay webhook endpoint
+@app.post("/api/v1/billing/razorpay/webhook", tags=["billing"])
+async def razorpay_webhook(request: Request):
+    """Receives Razorpay payment webhooks. Verifies signature, updates user plan/expiry."""
+    try:
+        payload = await request.body()
+        signature = request.headers.get("X-Razorpay-Signature")
+        secret = os.getenv("RAZORPAY_WEBHOOK_SECRET", "demo")
+        # Verify signature
+        expected = hmac_sha256(secret, payload)
+        if not secrets.compare_digest(signature or "", expected):
+            logger.warning("[RAZORPAY] Invalid webhook signature.")
+            raise HTTPException(status_code=400, detail="Invalid signature")
+        data = await request.json()
+        event = data.get("event")
+        sub_id = data.get("payload", {}).get("subscription", {}).get("entity", {}).get("id")
+        if not sub_id:
+            logger.warning("[RAZORPAY] No subscription id in webhook.")
+            raise HTTPException(status_code=400, detail="No subscription id")
+        session = get_db_session()
+        user = session.query(User).filter_by(razorpay_subscription_id=sub_id).first()
+        if not user:
+            logger.warning(f"[RAZORPAY] No user for subscription {sub_id}")
+            raise HTTPException(status_code=404, detail="User not found")
+        # Update plan/expiry based on event
+        if event == "subscription.activated":
+            user.plan_id = "paid"
+            user.plan_expiry = datetime.utcnow() + timedelta(days=30)
+            user.is_active = True
+        elif event == "subscription.completed":
+            user.plan_id = "paid"
+            user.plan_expiry = datetime.utcnow() + timedelta(days=30)
+        elif event == "subscription.halted":
+            user.is_active = False
+        elif event == "subscription.cancelled":
+            user.is_active = False
+        session.commit()
+        logger.info(f"[RAZORPAY] Synced user {user.username} for event {event}")
+        return {"ok": True}
+    except Exception as e:
+        logger.error(f"[RAZORPAY] Webhook error: {e}")
+        raise HTTPException(status_code=500, detail="Webhook error")
+
+def hmac_sha256(secret, body):
+    import hmac
+    import hashlib
+    return hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
+
+# 2. Signup endpoint
+@app.post("/api/v1/auth/signup", tags=["auth"])
+def signup(email: str, password: str, plan: str = "free"):
+    session = get_db_session()
+    if session.query(User).filter_by(email=email).first():
+        raise HTTPException(status_code=400, detail="Email already registered")
+    username = email.split("@")[0] + secrets.token_hex(2)
+    hashed_password = hash_password(password)
+    user = User(
+        tenant_id=username,
+        username=username,
+        email=email,
+        plan_id=plan,
+        plan_expiry=datetime.utcnow() + timedelta(days=14) if plan == "trial" else None,
+        is_active=True,
+        hashed_password=hashed_password,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow(),
+    )
+    session.add(user)
+    session.commit()
+    # TODO: Send verification email
+    logger.info(f"[SIGNUP] New user {email} ({plan}) registered.")
+    return {"ok": True, "username": username, "plan": plan}
+
+def hash_password(password: str) -> str:
+    import bcrypt
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+# 3. Email verification endpoint (token-based)
+@app.get("/api/v1/auth/verify_email", tags=["auth"])
+def verify_email(token: str):
+    # TODO: Implement token verification and user activation
+    # For now, just log and return ok
+    logger.info(f"[VERIFY_EMAIL] Token: {token}")
+    return {"ok": True}
+
+# 4. Password reset endpoints
+@app.post("/api/v1/auth/request_password_reset", tags=["auth"])
+def request_password_reset(email: str):
+    # TODO: Generate and email reset token
+    logger.info(f"[RESET] Password reset requested for {email}")
+    return {"ok": True}
+
+@app.post("/api/v1/auth/reset_password", tags=["auth"])
+def reset_password(token: str, new_password: str):
+    # TODO: Validate token, update password in DB
+    logger.info(f"[RESET] Password reset for token {token}")
+    return {"ok": True}
+
+# 5. Trial mode logic (14 days, auto-disable/upgrade)
+@app.post("/api/v1/auth/check_trial", tags=["auth"])
+def check_trial(email: str):
+    session = get_db_session()
+    user = session.query(User).filter_by(email=email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if user.plan_id == "trial" and user.plan_expiry and user.plan_expiry < datetime.utcnow():
+        user.is_active = False
+        session.commit()
+        logger.info(f"[TRIAL] Trial expired for {email}")
+        return {"trial_expired": True}
+    return {"trial_expired": False, "plan_expiry": user.plan_expiry}
+
+# 6. Billing/plan status endpoint
+@app.get("/api/v1/billing/status", tags=["billing"])
+def billing_status(user: Dict[str, Any] = Depends(get_current_user)):
+    session = get_db_session()
+    db_user = session.query(User).filter_by(username=user["username"]).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "plan": db_user.plan_id,
+        "plan_expiry": db_user.plan_expiry,
+        "is_active": db_user.is_active,
+        "email": db_user.email,
+        "razorpay_subscription_id": db_user.razorpay_subscription_id,
+    }
 # --- CLEANED IMPORTS (all at top, no duplicates) ---
 import logging
 import pandas as pd
@@ -17,8 +179,8 @@ from core.db_models import User
 from api.subscription_utils import enforce_plan
 from services.razorpay_sync import sync_user_plan
 from utils.redis_rate_limiter import RedisRateLimiter
-from core.auth_manager import AuthenticationManager
-from config.config import TELEGRAM_TOKEN
+from core.auth_manager import AuthenticationManager, decode_access_token
+from typing import Dict, Any
 
 
 # --- FASTAPI APP INSTANCE ---
@@ -29,6 +191,54 @@ from fastapi.exceptions import RequestValidationError as FastAPIRequestValidatio
 
 app = FastAPI(title="Artemis Signals API")
 auth_manager = AuthenticationManager()
+rate_limiter = RedisRateLimiter()
+
+
+# --- PLAN-BASED RATE LIMITS (configurable, move to config.py in production) ---
+PLAN_LIMITS = {
+    "free": {"max_calls": 10, "period": 60},
+    "paid": {"max_calls": 100, "period": 60},
+    "admin": {"max_calls": 1000, "period": 60},
+}
+
+def get_current_user(request: Request) -> Dict[str, Any]:
+    token = request.headers.get("Authorization")
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid token")
+    token = token.split(" ")[1]
+    user = None
+    try:
+        user = decode_access_token(token)
+    except Exception:
+        pass
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return user
+
+def get_user_plan(user: Dict[str, Any]) -> str:
+    # TODO: Replace with real plan lookup (DB or JWT claim)
+    return user.get("plan", "free")
+
+def is_admin(user: Dict[str, Any]) -> bool:
+    return user.get("role") == "admin"
+
+def rate_limit_dependency(
+    request: Request,
+    user: Dict[str, Any] = Depends(get_current_user)
+) -> Dict[str, Any]:
+    user_id = user.get("username")
+    plan = get_user_plan(user)
+    limits = PLAN_LIMITS.get(plan, PLAN_LIMITS["free"])
+    key = f"{user_id}:{plan}:{request.url.path}"
+    try:
+        allowed = rate_limiter.is_allowed(key, limits["max_calls"], limits["period"])
+    except Exception as e:
+        logger.error(f"[RATE LIMIT ERROR] {e}")
+        raise HTTPException(status_code=500, detail="Rate limiting failed. Please try again later.")
+    if not allowed:
+        logger.warning(f"[RATE LIMIT] User {user_id} ({plan}) exceeded limit on {request.url.path}")
+        raise HTTPException(status_code=429, detail=f"Rate limit exceeded: {limits['max_calls']} per {limits['period']}s for plan '{plan}'")
+    return {"plan": plan, "limit": limits["max_calls"], "period": limits["period"]}
 # --- WEBSOCKET ENDPOINT FOR LIVE SIGNALS/PRICES/CHARTS ---
 import asyncio
 import json
@@ -154,17 +364,23 @@ def ready():
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
 
-def get_current_user(request: Request):
+def get_current_user(request: Request) -> Dict[str, Any]:
     token = request.headers.get("Authorization")
     if not token or not token.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid token")
     token = token.split(" ")[1]
-    user = auth_manager.get_current_user(token)
+    # Use decode_access_token from auth_manager
+    user = None
+    try:
+        user = auth_manager.decode_access_token(token)
+    except Exception:
+        pass
     if not user:
         raise HTTPException(status_code=401, detail="Invalid token")
     return user
 
-def get_current_tenant_id(user):
+from typing import Optional
+def get_current_tenant_id(user: Dict[str, Any]) -> Optional[str]:
     return user.get("tenant_id")
 
 # Update endpoints to filter by tenant_id
@@ -174,9 +390,41 @@ def get_signal_history(
     start_date: str = Query(None, description="Start date YYYY-MM-DD (optional)"),
     end_date: str = Query(None, description="End date YYYY-MM-DD (optional)"),
     limit: int = Query(100, description="Max records to return"),
-    user: dict = Depends(get_current_user)
-):
+    user: Dict[str, Any] = Depends(get_current_user),
+    _rate_limit: Dict[str, Any] = Depends(rate_limit_dependency)
+) -> Any:
     tenant_id = get_current_tenant_id(user)
+    @app.get("/api/v1/usage", tags=["system"])
+    def get_my_usage(
+        user: Dict[str, Any] = Depends(get_current_user)
+    ):
+        """Returns current user's API usage for the last hour."""
+        user_id = user.get("username")
+        plan = get_user_plan(user)
+        usage = {}
+        try:
+            for endpoint in ["/api/v1/signals/history"]:  # Add more endpoints as needed
+                key = f"{user_id}:{plan}:{endpoint}"
+                usage[endpoint] = rate_limiter.get_count(key, PLAN_LIMITS[plan]["period"])
+        except Exception as e:
+            logger.error(f"[USAGE] Failed to fetch usage: {e}")
+            raise HTTPException(status_code=500, detail="Failed to fetch usage.")
+        return {"user": user_id, "plan": plan, "usage": usage}
+
+    # --- ADMIN USAGE STATS ENDPOINT ---
+    @app.get("/api/v1/admin/usage", tags=["admin"])
+    def get_all_usage(
+        user: Dict[str, Any] = Depends(get_current_user)
+    ):
+        """Admin-only: Returns API usage for all users in the last hour."""
+        if not is_admin(user):
+            raise HTTPException(status_code=403, detail="Admin access required.")
+        try:
+            usage = rate_limiter.get_all_usage(period=3600)
+        except Exception as e:
+            logger.error(f"[ADMIN USAGE] Failed: {e}")
+            raise HTTPException(status_code=500, detail="Failed to fetch admin usage.")
+        return {"usage": usage, "period_sec": 3600}
     """
     Returns historical signals (from signals.json) with optional filtering by symbol and date.
     Useful for analytics, backtesting, and dashboard stats.
