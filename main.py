@@ -1,3 +1,121 @@
+# === ADVANCED SCHEDULING & EMAIL REMINDERS ===
+import smtplib
+from email.mime.text import MIMEText
+import config as artemis_config
+
+def send_email_reminder(subject, body, to_email):
+    try:
+        msg = MIMEText(body)
+        msg['Subject'] = subject
+        msg['From'] = artemis_config.EMAIL_CONFIG['sender_email']
+        msg['To'] = to_email
+        with smtplib.SMTP(artemis_config.EMAIL_CONFIG['smtp_host'], artemis_config.EMAIL_CONFIG['smtp_port']) as server:
+            if artemis_config.EMAIL_CONFIG['smtp_user'] and artemis_config.EMAIL_CONFIG['smtp_password']:
+                server.starttls()
+                server.login(artemis_config.EMAIL_CONFIG['smtp_user'], artemis_config.EMAIL_CONFIG['smtp_password'])
+            server.send_message(msg)
+        return True
+    except Exception as e:
+        st.error(f"Email reminder failed: {e}")
+        return False
+
+def should_send_reminder(frequency, last_sent, now, reminder_time):
+    # frequency: 'daily', 'weekly', or 'custom' (future)
+    # last_sent, now: 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM'
+    # reminder_time: 'HH:MM' (24h)
+    from datetime import datetime, timedelta
+    now_dt = datetime.strptime(now, '%Y-%m-%d %H:%M')
+    last_dt = datetime.strptime(last_sent, '%Y-%m-%d %H:%M') if last_sent else None
+    target_time = now_dt.replace(hour=int(reminder_time[:2]), minute=int(reminder_time[3:]), second=0, microsecond=0)
+    if frequency == 'daily':
+        if not last_sent or (now_dt.date() > last_dt.date() and now_dt >= target_time):
+            return True
+    elif frequency == 'weekly':
+        if not last_sent or (now_dt.isocalendar()[1] > last_dt.isocalendar()[1] and now_dt >= target_time):
+            return True
+    # Add more custom logic as needed
+    return False
+
+with st.sidebar:
+    st.markdown("### ⚙️ Reminder Settings")
+    freq = st.selectbox("Reminder Frequency", ["daily", "weekly"], index=["daily", "weekly"].index(getattr(artemis_config, 'REMINDER_FREQUENCY', 'daily')))
+    time_str = st.text_input("Reminder Time (HH:MM, 24h IST)", value=getattr(artemis_config, 'REMINDER_TIME', '08:00'))
+    email = st.text_input("Reminder Email", value=getattr(artemis_config, 'REMINDER_EMAIL', artemis_config.EMAIL_CONFIG['recipient_emails'][0]))
+    if st.button("Save Reminder Settings"):
+        st.session_state['reminder_freq'] = freq
+        st.session_state['reminder_time'] = time_str
+        st.session_state['reminder_email'] = email
+        st.success("Reminder settings saved!")
+
+    # Automated reminder logic
+    now_str = time.strftime('%Y-%m-%d %H:%M')
+    last_sent = st.session_state.get('last_reminder_sent', '')
+    reminder_freq = st.session_state.get('reminder_freq', freq)
+    reminder_time = st.session_state.get('reminder_time', time_str)
+    reminder_email = st.session_state.get('reminder_email', email)
+    if pending and should_send_reminder(reminder_freq, last_sent, now_str, reminder_time):
+        subject = "[Artemis Sprint Reminder] Pending Tasks"
+        body = "Pending tasks for Artemis:\n" + '\n'.join(f"- {t}" for t in pending)
+        send_email_reminder(subject, body, reminder_email)
+        send_telegram(subject + "\n" + body)
+        st.session_state['last_reminder_sent'] = now_str
+# === AUTOMATED SPRINT REMINDERS ===
+import re
+SPRINT_TRACKER = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'sv-artemis-signals-private', 'SPRINT_TASK_TRACKER_JAN2026.md'))
+def get_pending_sprint_tasks():
+    if not os.path.exists(SPRINT_TRACKER):
+        return []
+    with open(SPRINT_TRACKER, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    tasks = []
+    for line in lines:
+        m = re.match(r'- \[ \] (.+)', line)
+        if m:
+            tasks.append(m.group(1).strip())
+    return tasks
+
+with st.sidebar:
+    st.markdown("### ⏰ Sprint Reminders")
+    pending = get_pending_sprint_tasks()
+    if pending:
+        st.warning(f"Pending tasks: {len(pending)}")
+        for t in pending:
+            st.write(f"- {t}")
+        # Send daily Telegram reminder (once per day)
+        today = time.strftime('%Y-%m-%d')
+        if st.session_state.get('last_reminder', '') != today:
+            send_telegram(f"[SPRINT REMINDER] Pending tasks for Artemis:\n" + '\n'.join(f"- {t}" for t in pending))
+            st.session_state['last_reminder'] = today
+    else:
+        st.success("No pending sprint tasks! 🚀")
+# === AUTOMATED HEALTH CHECKS ===
+import requests
+import time
+from utils.telegram import send_telegram
+
+def check_service(url, name):
+    try:
+        r = requests.get(url, timeout=3)
+        if r.status_code == 200:
+            return True, "🟢 Healthy"
+        else:
+            return False, f"🔴 Error: {r.status_code}"
+    except Exception as e:
+        return False, f"🔴 Down: {e}"
+
+with st.sidebar:
+    st.markdown("### 🩺 Artemis Health Check")
+    backend_ok, backend_status = check_service("http://127.0.0.1:8000/api/v1/health", "Backend")
+    frontend_ok, frontend_status = check_service("http://localhost:5173", "Frontend")
+    streamlit_ok, streamlit_status = check_service("http://localhost:8501", "Streamlit")
+    st.write(f"Backend: {backend_status}")
+    st.write(f"Frontend: {frontend_status}")
+    st.write(f"Streamlit: {streamlit_status}")
+    if not (backend_ok and frontend_ok and streamlit_ok):
+        send_telegram(f"[HEALTH ALERT] Artemis service down!\nBackend: {backend_status}\nFrontend: {frontend_status}\nStreamlit: {streamlit_status}")
+        st.error("One or more Artemis services are down! Telegram alert sent.")
+    else:
+        st.success("All Artemis services healthy.")
 # Import get_ltp_database for LTP management
 from core.ltp_database import get_ltp_database
 # main.py — ARTEMIS SIGNALS
@@ -99,10 +217,70 @@ with tab1:
         if st.button("📊 DOWNLOAD TODAY'S OPTION CHAIN + IV", type="primary"):
             with st.spinner("🔨 Building edge..."):
                 try:
-                    download_and_save_atm_iv()
-                    st.success("✅ IV Database updated")
+                    from utils.helpers import get_kite_instance
+                    kite = get_kite_instance()
+                    from datetime import datetime
+                    def get_option_chain_iv(kite, symbol):
+                        try:
+                            url = f"NSE:{symbol}"
+                            quote = kite.ltp(url)
+                            if not quote or url not in quote:
+                                st.error(f"Symbol not found: {symbol}")
+                                return None
+                            oc = kite.quote(url, mode="full")
+                            if oc and url in oc:
+                                data = oc[url]
+                                if 'ohlc' in data:
+                                    return {
+                                        'symbol': symbol,
+                                        'iv': data.get('iv', None),
+                                        'timestamp': datetime.now(),
+                                    }
+                            return None
+                        except Exception as e:
+                            st.error(f"Option chain fetch error: {e}")
+                            return None
+                    # Example usage for NIFTY
+                    result = get_option_chain_iv(kite, "NIFTY")
+                    if result:
+                        st.success(f"IV for {result['symbol']}: {result['iv']} @ {result['timestamp']}")
+                    else:
+                        st.warning("No IV data found.")
                 except Exception as e:
                     st.error(f"❌ IV download failed: {e}")
+        if st.button("🔄 REFRESH INTRADAY OPTION CHAIN", type="secondary"):
+            with st.spinner("Refreshing intraday option chain..."):
+                try:
+                    from utils.helpers import get_kite_instance
+                    kite = get_kite_instance()
+                    result = get_option_chain_iv(kite, "NIFTY")
+                    if result:
+                        st.success(f"[INTRADAY] IV for {result['symbol']}: {result['iv']} @ {result['timestamp']}")
+                    else:
+                        st.warning("No IV data found (intraday refresh).")
+                except Exception as e:
+                    st.error(f"❌ Intraday refresh failed: {e}")
+# === PAPER TRADING LOGS TAB ===
+with st.sidebar:
+    if st.button("📖 View Paper Trading Logs"):
+        st.session_state.show_logs = True
+
+if st.session_state.get("show_logs", False):
+    st.title("📖 Paper Trading Logs & Signal History")
+    import os
+    import pandas as pd
+    log_path = os.path.join("logs", "paper_trading.log")
+    if os.path.exists(log_path):
+        with open(log_path, "r", encoding="utf-8") as f:
+            log_lines = f.readlines()[-500:]
+        st.text_area("Last 500 log lines", value="".join(log_lines), height=400)
+        # If you have a CSV/JSON trade history, show as table:
+        trade_path = os.path.join("logs", "paper_trades.csv")
+        if os.path.exists(trade_path):
+            df = pd.read_csv(trade_path)
+            st.dataframe(df.tail(100), use_container_width=True)
+    else:
+        st.warning("No paper trading logs found.")
 
 with tab2:
     st.header("🎯 Strategy Scanner — ML + GARCH + IV")
@@ -152,8 +330,43 @@ with tab4:
 with tab5:
     st.header("🚦 Active Signals — Real-Time")
     import os, json
-    signals_path = os.path.join(os.path.dirname(__file__), 'marketdata', 'signals.json')
-    if os.path.exists(signals_path):
+    import config
+    signals_path = str(config.SIGNALS_PATH)
+    # If signals.json does not exist, try to generate signals and save
+    if not os.path.exists(signals_path):
+        try:
+            from utils.unified_scanner import run_all_strategies
+            df, summary = run_all_strategies()
+            if not df.empty:
+                df.to_json(signals_path, orient="records", indent=2)
+                st.success("Signals generated and saved.")
+                # Send Telegram alerts for each signal
+                from utils.telegram import send_telegram
+                for _, row in df.iterrows():
+                    msg = (
+                        f"🎯 SIGNAL ALERT\n"
+                        f"Symbol: {row.get('symbol','')}\n"
+                        f"Strategy: {row.get('strategy','')}\n"
+                        f"Legs: {row.get('legs','')}\n"
+                        f"LTP: ₹{row.get('ltp','')}\n"
+                        f"Target: ₹{row.get('target','')}\n"
+                        f"Days to Trade: {row.get('days_to_trade','')}\n"
+                        f"Lot Size: {row.get('lot_size','')}\n"
+                        f"Stop Loss: ₹{row.get('stop_loss','')}\n"
+                        f"Risk/Reward: {row.get('risk_reward','')}\n"
+                        f"Confidence: {row.get('confidence','')}\n"
+                        f"Instrument Type: {row.get('instrument_type','')}\n"
+                        f"Expiry: {row.get('expiry','')}\n"
+                        f"Margin: ₹{row.get('margin','')}\n"
+                        f"Rationale: {row.get('rationale','')}\n"
+                    )
+                    send_telegram(msg)
+                st.info("Telegram alerts sent for all signals.")
+            else:
+                st.info("No active signals found.")
+        except Exception as e:
+            st.error(f"Failed to generate signals: {e}")
+    else:
         with open(signals_path, 'r', encoding='utf-8') as f:
             signals = json.load(f)
         if signals:
@@ -162,8 +375,6 @@ with tab5:
             st.dataframe(df, use_container_width=True)
         else:
             st.info("No active signals found.")
-    else:
-        st.warning("signals.json not found. Run scanner to generate signals.")
 
 
 # Scheduler import and availability detection (robust)
@@ -267,7 +478,7 @@ if "paper_manager" not in st.session_state:
             sys.modules['paper_manager_module'] = paper_module
             spec.loader.exec_module(paper_module)
             st.session_state.paper_manager = paper_module.PaperTradingManager(
-                initial_capital=100000,
+                initial_capital=config.PAPER_CAPITAL,
                 challenge_days=30,
                 auto_trade=False
             )
@@ -337,10 +548,10 @@ with col1:
 with col2:
     if st.session_state.paper_manager:
         perf = st.session_state.paper_manager.get_overall_performance()
-        capital = perf.get('capital', 100000)
+        capital = perf.get('capital', config.PAPER_CAPITAL)
         st.metric("💰 Available Capital", f"₹{capital:,.0f}")
     else:
-        st.metric("💰 Available Capital", "₹100,000")
+        st.metric("💰 Available Capital", f"₹{config.PAPER_CAPITAL:,.0f}")
 
 with col3:
     if st.session_state.paper_manager:
@@ -457,7 +668,7 @@ with st.sidebar:
     st.markdown("#### 📋 Reports")
     if st.button("🌅 Opening Bell", use_container_width=True, key="nav_opening"):
         st.switch_page("pages/opening_bell_report.py")
-    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing":
+    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing"):
         st.switch_page("pages/closing_bell_report.py")
     if st.button("📧 Email Reports", use_container_width=True, key="nav_email"):
         st.switch_page("pages/email_subscriptions.py")
@@ -494,7 +705,7 @@ with st.sidebar:
     # QUICK STATS FOOTER
     # ========================================================================
     st.markdown("### 💰 Quick Stats")
-    st.write(f"Capital: ₹{100000:,}")
+    st.write(f"Capital: ₹{config.PAPER_CAPITAL:,}")
     st.write(f"Risk: 2% per trade")
     st.write(f"Mode: 📝 Paper")
     sub_status = "💎 Premium" if st.session_state.get('subscribed', False) else "🆓 Free"

@@ -211,3 +211,18 @@ For Shivaansh & Krishaansh — this line pays your fees!
 2026-01-06 21:33:09 INFO     [Artemis Signals] [OK] EOD/BOD Scheduler started successfully!
 2026-01-06 21:33:09 INFO     [Artemis Signals]   ✅ BOD scheduled: 07:00 AM IST (Market pre-open)
 2026-01-06 21:33:09 INFO     [Artemis Signals]   ✅ EOD scheduled: 05:55 PM IST (Market close + 5 min buffer)
+
+2026-01-07 10:40:23 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 10:40:54 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:19:35 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:20:05 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:20:53 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!

@@ -1,3 +1,34 @@
+from fastapi import FastAPI
+app = FastAPI()
+# --- HEALTH CHECK ENDPOINT ---
+@app.get("/api/v1/health", tags=["system"])
+def health_check():
+    """Basic health check for Artemis backend."""
+    return {"status": "ok", "message": "Artemis backend is healthy."}
+from fastapi import FastAPI
+app = FastAPI()
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+import os
+import pandas as pd
+
+# === PAPER TRADING LOGS ENDPOINT ===
+@app.get("/api/v1/logs/paper_trading", tags=["logs"])
+def get_paper_trading_logs():
+    log_path = os.path.join("logs", "paper_trading.log")
+    trade_path = os.path.join("logs", "paper_trades.csv")
+    logs = []
+    trades = []
+    if os.path.exists(log_path):
+        with open(log_path, "r", encoding="utf-8") as f:
+            logs = f.readlines()[-500:]
+    if os.path.exists(trade_path):
+        try:
+            df = pd.read_csv(trade_path)
+            trades = df.tail(100).to_dict(orient="records")
+        except Exception:
+            trades = []
+    return JSONResponse({"logs": logs, "trades": trades})
 from dotenv import load_dotenv
 load_dotenv()
 # --- SUPPORT/CONTACT ENDPOINT ---
