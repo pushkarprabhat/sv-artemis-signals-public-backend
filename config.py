@@ -21,7 +21,7 @@ ENABLE_SMS_ALERTS = bool(int(os.environ.get('ENABLE_SMS_ALERTS', '0')))
 
 WHATSAPP_CONFIG = {
 	'enabled': bool(int(os.environ.get('ENABLE_WHATSAPP_ALERTS', '0'))),
-	'default_recipient': os.environ.get('ADMIN_WHATSAPP', '+919999999999'),
+	'default_recipient': os.environ.get('
 	'provider': os.environ.get('WHATSAPP_PROVIDER', 'meta'),
 	'api_key': os.environ.get('WHATSAPP_API_KEY', ''),
 }

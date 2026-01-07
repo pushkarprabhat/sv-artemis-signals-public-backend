@@ -457,7 +457,7 @@ with st.sidebar:
     st.markdown("#### 📋 Reports")
     if st.button("🌅 Opening Bell", use_container_width=True, key="nav_opening"):
         st.switch_page("pages/opening_bell_report.py")
-    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing"):
+    if st.button("🌆 Closing Bell", use_container_width=True, key="nav_closing":
         st.switch_page("pages/closing_bell_report.py")
     if st.button("📧 Email Reports", use_container_width=True, key="nav_email"):
         st.switch_page("pages/email_subscriptions.py")
