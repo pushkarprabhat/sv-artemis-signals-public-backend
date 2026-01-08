@@ -7,6 +7,41 @@ import os
 # =============================================================================
 PROJECT_NAME = "Artemis Signals by ManekBaba"
 COMMERCIAL_MODE = os.getenv('COMMERCIAL_MODE', 'True').lower() == 'true'
+import os
+
+# Artemis Signals Config — For Shivaansh & Krishaansh
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://artemis_local:localpass@localhost:5432/artemis_db")
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-key-please-change")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.mailtrap.io")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "2525"))
+EMAIL_USER = os.getenv("EMAIL_USER", "dev-email-user")
+EMAIL_PASS = os.getenv("EMAIL_PASS", "dev-email-pass")
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+KITE_API_KEY = os.getenv("KITE_API_KEY", "")
+KITE_API_SECRET = os.getenv("KITE_API_SECRET", "")
+LIVE_TRADING_ENABLED = os.getenv("LIVE_TRADING_ENABLED", "False") == "True"
+DOMAIN = os.getenv("DOMAIN", "localhost")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@localhost")
+SMTP_TLS = os.getenv("SMTP_TLS", "True") == "True"
+LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
+LOG_TO_FILE = os.getenv("LOG_TO_FILE", "True") == "True"
+LOG_DIR = os.getenv("LOG_DIR", "./logs")
+ENABLE_TELEGRAM = os.getenv("ENABLE_TELEGRAM", "True") == "True"
+BACKUP_PATH = os.getenv("BACKUP_PATH", "./backups")
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+RBAC_ENABLED = os.getenv("RBAC_ENABLED", "True") == "True"
+EOD_TASK_TIME = os.getenv("EOD_TASK_TIME", "17:50")
+MAX_CONCURRENT_TRADES = int(os.getenv("MAX_CONCURRENT_TRADES", "10"))
+MAX_TRADE_RISK_PCT = int(os.getenv("MAX_TRADE_RISK_PCT", "2"))
+HALF_KELLY_ENABLED = os.getenv("HALF_KELLY_ENABLED", "True") == "True"
+PAPER_TRADING_DAYS = int(os.getenv("PAPER_TRADING_DAYS", "60"))
+SIGNALS_PATH = os.getenv("SIGNALS_PATH", "./signals")
+
+# For Shivaansh & Krishaansh — this config pays your fees!
 
 # Conditional content based on mode
 # Hide family content in commercial mode

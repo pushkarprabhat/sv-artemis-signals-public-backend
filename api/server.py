@@ -1,16 +1,56 @@
-from fastapi import FastAPI
-app = FastAPI()
-# --- HEALTH CHECK ENDPOINT ---
-@app.get("/api/v1/health", tags=["system"])
-def health_check():
-    """Basic health check for Artemis backend."""
-    return {"status": "ok", "message": "Artemis backend is healthy."}
-from fastapi import FastAPI
-app = FastAPI()
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse
+
+import sentry_setup
 import os
 import pandas as pd
+import logging
+from logging.handlers import RotatingFileHandler
+import time
+import secrets
+import hashlib
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Request, Depends, WebSocket, WebSocketDisconnect
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError as FastAPIRequestValidationError
+from typing import Dict, Any, List
+
+app = FastAPI()
+
+# --- Robust /api/v1/health endpoint (always after app = FastAPI()) ---
+@app.get("/api/v1/health", tags=["system"])
+def health_proxy():
+    """
+    Robust proxy endpoint for /api/v1/health to support legacy and E2E checks.
+    Always returns a valid JSON response, even if health() fails.
+    """
+    try:
+        result = health()
+        if not isinstance(result, dict):
+            return {"status": "error", "message": "health() did not return a dict"}
+        return result
+    except Exception as e:
+        logger = logging.getLogger("artemis.health")
+        logger.error(f"[HEALTH_PROXY] /api/v1/health failed: {e}")
+        return {"status": "error", "message": str(e)}
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Request, Depends, WebSocket, WebSocketDisconnect
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError as FastAPIRequestValidationError
+from typing import Dict, Any, List
+
+
+# --- LOGGING SETUP WITH ROTATION ---
+LOG_DIR = os.environ.get("LOG_DIR", "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+LOG_FILE = os.path.join(LOG_DIR, "artemis_backend.log")
+
+handler = RotatingFileHandler(LOG_FILE, maxBytes=5*1024*1024, backupCount=5)
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s %(name)s: %(message)s')
+handler.setFormatter(formatter)
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.INFO)
+root_logger.addHandler(handler)
+
+app = FastAPI()
 
 # === PAPER TRADING LOGS ENDPOINT ===
 @app.get("/api/v1/logs/paper_trading", tags=["logs"])
@@ -29,7 +69,7 @@ def get_paper_trading_logs():
         except Exception:
             trades = []
     return JSONResponse({"logs": logs, "trades": trades})
-from dotenv import load_dotenv
+# Load environment variables
 load_dotenv()
 # --- SUPPORT/CONTACT ENDPOINT ---
 import smtplib
@@ -59,12 +99,10 @@ def support_contact(email: str, message: str):
     except Exception as e:
         logger.error(f"[SUPPORT] Failed to send support request: {e}")
         raise HTTPException(status_code=500, detail="Failed to send support request.")
+# --- SERVICE/DB IMPORTS (after app definition) ---
 from services.razorpay_sync import get_db_session, get_subscription_status
 from services.subscription_manager import SubscriptionManager
 from core.db_models import User
-from datetime import datetime, timedelta
-import secrets
-import hashlib
 # --- BILLING & ONBOARDING ENDPOINTS ---
 
 # 1. Razorpay webhook endpoint
@@ -180,6 +218,22 @@ def check_trial(email: str):
     return {"trial_expired": False, "plan_expiry": user.plan_expiry}
 
 # 6. Billing/plan status endpoint
+
+# --- Auth helper: get_current_user ---
+def get_current_user(request: Request) -> Dict[str, Any]:
+    token = request.headers.get("Authorization")
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing or invalid token")
+    token = token.split(" ")[1]
+    user = None
+    try:
+        user = decode_access_token(token)
+    except Exception:
+        pass
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return user
+
 @app.get("/api/v1/billing/status", tags=["billing"])
 def billing_status(user: Dict[str, Any] = Depends(get_current_user)):
     session = get_db_session()
@@ -193,10 +247,7 @@ def billing_status(user: Dict[str, Any] = Depends(get_current_user)):
         "email": db_user.email,
         "razorpay_subscription_id": db_user.razorpay_subscription_id,
     }
-# --- CLEANED IMPORTS (all at top, no duplicates) ---
-import logging
-import pandas as pd
-import os
+# ...existing code...
 import time
 from fastapi import FastAPI, HTTPException, Query, Request, Depends, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
@@ -539,16 +590,24 @@ async def admin_force_plan_change(request: Request):
     finally:
         session.close()
 # --- COMPLIANCE CHECK ENDPOINT: Plan-gated ---
+from api.subscription_utils import enforce_plan
+
+def compliance_dependency(request: Request):
+    return enforce_plan(request, "compliance")
+
 @app.get("/api/v1/compliance/check")
-async def compliance_check(request: Request, user=Depends(lambda request=request: enforce_plan(request, "compliance"))):
+async def compliance_check(request: Request, user=Depends(compliance_dependency)):
     # For Shivaansh & Krishaansh — this line pays your fees!
     # TODO: Implement real compliance logic
     return {"compliance": "ok", "timestamp": "2025-12-31T23:59:59"}
 
 # --- RAZORPAY SYNC ENDPOINT: Plan-gated ---
 from services.razorpay_sync import sync_user_plan
+def razorpay_sync_dependency(request: Request):
+    return enforce_plan(request, "razorpay_sync")
+
 @app.post("/api/v1/razorpay/sync")
-async def razorpay_sync(request: Request, user=Depends(lambda request=request: enforce_plan(request, "razorpay_sync"))):
+async def razorpay_sync(request: Request, user=Depends(razorpay_sync_dependency)):
     # For Shivaansh & Krishaansh — this line pays your fees!
     # Sync user plan with Razorpay
     ok = sync_user_plan(user)
@@ -590,7 +649,7 @@ class FutEqOIResponse(BaseModel):
                         "win_rate": 62.5,
                         "fut_eq_oi": 4800,
                         "fut_eq_oi_by_symbol": {"NIFTY24JANFUT": 2000, "NIFTY24JAN22000CE": 2800},
-                        "fut_eq_oi_warning": false,
+                        "fut_eq_oi_warning": False,
                         "sebi_ban_limit": 5000,
                         "message": "Demo live portfolio with SEBI Delta-Based OI (FutEq OI)"
                     }
@@ -599,7 +658,7 @@ class FutEqOIResponse(BaseModel):
         }
     }
 )
-async def get_live_portfolio(request: Request, user=Depends(lambda request=request: enforce_plan(request, "portfolio"))):
+async def get_live_portfolio(request: Request, user=Depends(lambda req: enforce_plan(req, "portfolio"))):
     """
     Get live portfolio stats, including SEBI Delta-Based Open Interest (FutEq OI).
     - **total_equity**: Total portfolio equity
@@ -640,7 +699,7 @@ async def get_live_portfolio(request: Request, user=Depends(lambda request=reque
 
 # --- TRADES ENDPOINT: Plan-gated ---
 @app.get("/api/v1/trades/history")
-async def get_trades_history(request: Request, user=Depends(lambda request=request: enforce_plan(request, "trades"))):
+async def get_trades_history(request: Request, user=Depends(lambda req: enforce_plan(req, "trades"))):
     tenant_id = get_current_tenant_id(user)
     # For Shivaansh & Krishaansh — this line pays your fees!
     # Load real trades for the authenticated user
@@ -675,7 +734,7 @@ async def get_trades_history(request: Request, user=Depends(lambda request=reque
                         "days_remaining": 27,
                         "fut_eq_oi": 4200,
                         "fut_eq_oi_by_symbol": {"BANKNIFTY24JANFUT": 1500, "BANKNIFTY24JAN48000PE": 2700},
-                        "fut_eq_oi_warning": false,
+                        "fut_eq_oi_warning": False,
                         "sebi_ban_limit": 5000,
                         "message": "Demo paper portfolio with SEBI Delta-Based OI (FutEq OI)"
                     }
@@ -684,7 +743,7 @@ async def get_trades_history(request: Request, user=Depends(lambda request=reque
         }
     }
 )
-async def get_paper_portfolio(request: Request, user=Depends(lambda request=request: enforce_plan(request, "papertrades"))):
+async def get_paper_portfolio(request: Request, user=Depends(lambda req: enforce_plan(req, "papertrades"))):
     """
     Get paper trading portfolio stats, including SEBI Delta-Based Open Interest (FutEq OI).
     - **total_capital**: Total paper trading capital

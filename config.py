@@ -1,4 +1,6 @@
 # === REMINDER SCHEDULING SETTINGS ===
+from dotenv import load_dotenv
+load_dotenv()
 REMINDER_EMAIL = os.environ.get('REMINDER_EMAIL', EMAIL_CONFIG['recipient_emails'][0])
 REMINDER_FREQUENCY = os.environ.get('REMINDER_FREQUENCY', 'daily')  # daily, weekly, custom
 REMINDER_TIME = os.environ.get('REMINDER_TIME', '08:00')  # 24h format, IST
@@ -41,9 +43,15 @@ SIGNALS_PATH = BASE_DIR / "marketdata" / "signals.json"
 PAPER_CAPITAL = 500_000           # ₹5 Lakh for 30-day challenge (For Shivaansh & Krishaansh — this line pays their fees)
 
 # === TELEGRAM ALERT SETTINGS ===
+
+# --- TELEGRAM ALERT SETTINGS ---
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', '')
+if not TELEGRAM_TOKEN:
+	print("[WARNING] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled. Set TELEGRAM_TOKEN in your .env or environment variables to enable alerts.")
+	ENABLE_TELEGRAM = False
+else:
+	ENABLE_TELEGRAM = bool(int(os.environ.get('ENABLE_TELEGRAM', '1')))
 TELEGRAM_CHAT_IDS = [int(cid) for cid in os.environ.get('TELEGRAM_CHAT_IDS', '').split(',') if cid.strip().isdigit()]
-ENABLE_TELEGRAM = bool(int(os.environ.get('ENABLE_TELEGRAM', '1')))
 
 # === LIVE CAPITAL ===
 LIVE_CAPITAL = 500_000           # ₹5 Lakh for live trading (For Shivaansh & Krishaansh — this line pays their fees)

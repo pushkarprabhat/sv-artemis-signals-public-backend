@@ -226,3 +226,282 @@ For Shivaansh & Krishaansh — this line pays your fees!
 
 2026-01-07 12:20:53 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
 For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:22:57 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:22:57 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:23:12 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:23:25 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:24:38 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:24:40 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:24:51 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:24:53 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:36:34 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:37:41 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 12:37:52 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 23:21:29 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 23:21:50 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 23:22:54 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 23:23:05 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-07 23:29:50 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 00:35:30 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+2026-01-08 00:48:53 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: [SPRINT REMINDER] Pending tasks for Artemis:
+- Mul...
+2026-01-08 00:48:55 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: [SPRINT REMINDER] Pending tasks for Artemis:
+- Mul...
+2026-01-08 00:48:58 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: [SPRINT REMINDER] Pending tasks for Artemis:
+- Mul...
+2026-01-08 00:49:03 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: [HEALTH ALERT] Artemis service down!
+Backend: 🔴 Do...
+2026-01-08 00:49:05 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: [HEALTH ALERT] Artemis service down!
+Backend: 🔴 Do...
+2026-01-08 00:49:07 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: [HEALTH ALERT] Artemis service down!
+Backend: 🔴 Do...
+
+2026-01-08 00:49:08 WARNING  [Artemis Signals] Error in scan_pairs_nifty500: cannot import name 'get_nifty500_symbols' from 'universe.symbols' (D:\TheiaOne_Programs\sv-artemis-signals-platform\sv-artemis-signals-public-backend\universe\symbols\__init__.py)
+2026-01-08 00:49:08 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-08 00:49:08 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-08 00:49:08 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-08 00:49:10 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:08 ERROR    Kite client not initi...
+2026-01-08 00:49:13 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:08 ERROR    Kite client not initi...
+2026-01-08 00:49:16 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:08 ERROR    Kite client not initi...
+
+2026-01-08 00:49:16 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-08 00:49:16 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-08 00:49:16 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-08 00:49:16 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-08 00:49:16 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-08 00:49:16 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-08 00:49:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:16 ERROR    CRITICAL: No universe...
+2026-01-08 00:49:21 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:16 ERROR    CRITICAL: No universe...
+2026-01-08 00:49:24 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:16 ERROR    CRITICAL: No universe...
+2026-01-08 00:49:24 DEBUG    [Artemis Signals] Error loading price for NIFTY: 'UNDERLYING_SYMBOL'
+2026-01-08 00:49:27 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:16 ERROR    Kite client not initi...
+2026-01-08 00:49:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:16 ERROR    Kite client not initi...
+2026-01-08 00:49:38 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:16 ERROR    Kite client not initi...
+
+2026-01-08 00:49:38 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-08 00:49:38 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-08 00:49:38 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-08 00:49:38 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-08 00:49:38 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-08 00:49:38 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-08 00:49:40 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:38 ERROR    CRITICAL: No universe...
+2026-01-08 00:49:43 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:38 ERROR    CRITICAL: No universe...
+2026-01-08 00:49:46 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:38 ERROR    CRITICAL: No universe...
+
+2026-01-08 00:49:46 ERROR    [Artemis Signals] Error in Ichimoku Plus scan: 'segment'
+2026-01-08 00:49:48 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:38 ERROR    Kite client not initi...
+2026-01-08 00:49:51 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:38 ERROR    Kite client not initi...
+2026-01-08 00:49:53 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:38 ERROR    Kite client not initi...
+
+2026-01-08 00:49:53 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-08 00:49:53 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-08 00:49:53 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-08 00:49:55 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:46 ERROR    Error in Ichimoku Plu...
+2026-01-08 00:49:58 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:46 ERROR    Error in Ichimoku Plu...
+2026-01-08 00:50:00 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:46 ERROR    Error in Ichimoku Plu...
+2026-01-08 00:50:02 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:49:53 ERROR    CRITICAL: No universe...
+2026-01-08 00:50:05 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:49:53 ERROR    CRITICAL: No universe...
+2026-01-08 00:50:07 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:49:53 ERROR    CRITICAL: No universe...
+2026-01-08 00:50:07 DEBUG    [Artemis Signals] Error loading price for BANKNIFTY: 'UNDERLYING_SYMBOL'
+
+2026-01-08 00:50:07 WARNING  [Artemis Signals] Could not load NIFTY or BANKNIFTY prices
+2026-01-08 00:50:09 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Calendar Sp...
+2026-01-08 00:50:12 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Calendar Sp...
+2026-01-08 00:50:15 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Calendar Sp...
+2026-01-08 00:50:17 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:21 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:23 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:25 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:28 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:30 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: BANKNIFTY Der...
+2026-01-08 00:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: BANKNIFTY Der...
+2026-01-08 00:50:34 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: BANKNIFTY Der...
+2026-01-08 00:50:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:39 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:41 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: nan
+Strategy: NIFTY Derivat...
+2026-01-08 00:50:45 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Butterfly (...
+2026-01-08 00:50:48 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Butterfly (...
+2026-01-08 00:50:50 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Butterfly (...
+2026-01-08 00:50:53 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Iron Condor...
+2026-01-08 00:50:55 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Iron Condor...
+2026-01-08 00:50:57 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Iron Condor...
+2026-01-08 00:50:59 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Strangle (O...
+2026-01-08 00:51:02 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Strangle (O...
+2026-01-08 00:51:04 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 🎯 SIGNAL ALERT
+Symbol: NIFTY
+Strategy: Strangle (O...
+2026-01-08 00:51:05 INFO     [Artemis Signals] [OK] KiteConnect instance set globally
+
+2026-01-08 00:51:05 ERROR    [Artemis Signals] Failed to init paper trading: [Errno 2] No such file or directory: 'D:\\TheiaOne_Programs\\sv-artemis-signals-platform\\sv-artemis-signals-public-backend\\strategies\\paper_trading_manager.py'
+2026-01-08 00:51:07 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-08 00:51:05 ERROR    Failed to init paper ...
+2026-01-08 00:51:10 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-08 00:51:05 ERROR    Failed to init paper ...
+2026-01-08 00:51:12 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-08 00:51:05 ERROR    Failed to init paper ...
+2026-01-08 00:51:12 INFO     [Artemis Signals] ✅ LTP Database initialized
+2026-01-08 00:51:12 INFO     [Artemis Signals] [STARTUP] Initializing EOD/BOD Scheduler...
+2026-01-08 00:51:12 INFO     [Artemis Signals] ⚙️ Setting up scheduled jobs...
+2026-01-08 00:51:12 INFO     [Artemis Signals]    ✅ BOD job scheduled for 07:00 AM IST (Mon-Fri)
+2026-01-08 00:51:12 INFO     [Artemis Signals]    ✅ EOD job scheduled for 17:55 PM IST (Mon-Fri)
+2026-01-08 00:51:12 INFO     [Artemis Signals] 🚀 SCHEDULER STARTED
+2026-01-08 00:51:12 INFO     [Artemis Signals]    Jobs: 2
+2026-01-08 00:51:12 INFO     [Artemis Signals] [OK] EOD/BOD Scheduler started successfully!
+2026-01-08 00:51:12 INFO     [Artemis Signals]   ✅ BOD scheduled: 07:00 AM IST (Market pre-open)
+2026-01-08 00:51:12 INFO     [Artemis Signals]   ✅ EOD scheduled: 05:55 PM IST (Market close + 5 min buffer)
+
+2026-01-08 01:10:08 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:23:52 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:24:22 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:27:39 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:27:41 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:29:32 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:30:03 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:32:46 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:32:47 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:37:13 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:37:16 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:49:46 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 10:49:47 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:00:09 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:00:09 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:02:19 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:02:34 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:04:59 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:05:12 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:23:50 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:28:15 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:28:17 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:29:35 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!
+
+2026-01-08 11:29:54 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
+For Shivaansh & Krishaansh — this line pays your fees!

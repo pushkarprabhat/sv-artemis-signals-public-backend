@@ -1,5 +1,14 @@
 # Artemis Signals by ManekBaba — Public Context
 
+
+## Robustness & Backward Compatibility (Non-Negotiable)
+
+- All improvements, refactors, and new features must be backward-compatible: **never break anything that was working well before**.
+- Every endpoint, feature, and integration must remain stable and reliable after any change.
+- Robust error handling: All endpoints must always return a valid response (never crash), with clear error messages and logging.
+- Regression/E2E tests must cover all critical paths to catch accidental breakage.
+- No dilution of existing functionality or standards when adding robustness or new features.
+
 ## Code-Level Recommendations (Always Referenced)
 
 > This section is canonical. Replicate in all Artemis Signals repos. Never let these recommendations go out of sight — always check here for architecture, SaaS, and subscription best practices.

@@ -1,0 +1,40 @@
+# Artemis Signals Backend CI/CD Workflow (GitHub Actions)
+# For Shivaansh & Krishaansh — this line pays your fees!
+name: Backend CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t artemis-backend .
+
+      - name: Run tests (if any)
+        run: |
+          echo "No tests yet — add pytest here!"
+
+      # --- Deployment Step (Manual for Oracle VM) ---
+      # You can automate this with SSH or use Docker Hub for image push
+      - name: Deploy to Oracle VM (manual step)
+        run: |
+          echo "Login to your Oracle VM, pull the latest code, and run:"
+          echo "docker build -t artemis-backend ."
+          echo "docker run -d -p 8000:8000 --env-file .env artemis-backend"
+        # For full automation, add SSH deploy steps here
