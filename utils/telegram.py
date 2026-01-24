@@ -57,8 +57,8 @@ def send_telegram(message: str, error: bool = False, chat_ids: list = None) -> b
         timestamp = datetime.now().strftime("%H:%M:%S")
         prefix = "📢 "
         full_message = f"{prefix}[Artemis] [{timestamp}] {message}"
-        # Dedupe: compute short hash of the message and skip if recently sent
-        h = hashlib.sha256(full_message.encode('utf-8')).hexdigest()
+        # Stronger dedupe: hash the message body (without timestamp/prefix)
+        h = hashlib.sha256(message.encode('utf-8')).hexdigest()
         now_ts = time.time()
         try:
             with _last_sent_lock:
