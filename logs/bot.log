@@ -505,3 +505,630 @@ For Shivaansh & Krishaansh — this line pays your fees!
 
 2026-01-08 11:29:54 WARNING  [Artemis Signals] [TELEGRAM] TELEGRAM_TOKEN is not set. Telegram alerts will be disabled.
 For Shivaansh & Krishaansh — this line pays your fees!
+2026-01-24 12:01:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 12:01:21 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 12:01:23 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 12:01:26 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 12:01:28 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 12:01:30 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 12:02:03 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 12:02:04 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 12:02:05 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:02:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:02:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:02:38 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:02:40 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:02:41 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:02:43 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:03:15 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:03:17 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:03:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:14:29 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:14:31 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:14:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:14:33 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:14:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:14:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+2026-01-24 15:15:09 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: Duplicate test message...
+2026-01-24 15:15:10 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: Duplicate test message...
+2026-01-24 15:15:12 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: Duplicate test message...
+
+2026-01-24 16:12:15 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'log_failure' from 'utils.failure_logger' (D:\TheiaOne_Programs\sv-artemis-signals-platform\sv-artemis-signals-public-backend\utils\failure_logger.py)
+
+2026-01-24 16:12:15 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 16:12:16 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:15 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:18 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:15 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:15 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:19 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 16:12:19 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 16:12:20 ERROR    [Artemis Signals] Token failed for RELIANCE (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 16:12:21 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:20 ERROR    Token failed for RELI...
+2026-01-24 16:12:23 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:20 ERROR    Token failed for RELI...
+2026-01-24 16:12:24 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:20 ERROR    Token failed for RELI...
+
+2026-01-24 16:12:24 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'log_failure' from 'utils.failure_logger' (D:\TheiaOne_Programs\sv-artemis-signals-platform\sv-artemis-signals-public-backend\utils\failure_logger.py)
+
+2026-01-24 16:12:24 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 16:12:25 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:24 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:27 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:24 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:28 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:24 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:28 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 16:12:28 ERROR    [Artemis Signals] Token failed for TCS (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 16:12:30 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:28 ERROR    Token failed for TCS ...
+2026-01-24 16:12:31 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:28 ERROR    Token failed for TCS ...
+2026-01-24 16:12:33 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:28 ERROR    Token failed for TCS ...
+
+2026-01-24 16:12:33 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'log_failure' from 'utils.failure_logger' (D:\TheiaOne_Programs\sv-artemis-signals-platform\sv-artemis-signals-public-backend\utils\failure_logger.py)
+
+2026-01-24 16:12:33 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 16:12:34 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:33 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:33 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:37 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:33 ERROR    CRITICAL: No universe...
+2026-01-24 16:12:37 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 16:12:37 ERROR    [Artemis Signals] Token failed for INFY (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 16:12:39 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 16:12:37 ERROR    Token failed for INFY...
+2026-01-24 16:12:40 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 16:12:37 ERROR    Token failed for INFY...
+2026-01-24 16:12:42 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 16:12:37 ERROR    Token failed for INFY...
+2026-01-24 18:24:00 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-24 18:24:00 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-24 18:24:00 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-24 18:24:02 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:00 ERROR    Kite client not initi...
+2026-01-24 18:24:03 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:00 ERROR    Kite client not initi...
+2026-01-24 18:24:05 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:00 ERROR    Kite client not initi...
+
+2026-01-24 18:24:05 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-24 18:24:05 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-24 18:24:05 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:24:06 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:05 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:08 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:05 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:09 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:05 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:09 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 18:24:09 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 18:24:10 ERROR    [Artemis Signals] Token failed for RELIANCE (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 18:24:12 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:10 ERROR    Token failed for RELI...
+2026-01-24 18:24:14 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:10 ERROR    Token failed for RELI...
+2026-01-24 18:24:15 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:10 ERROR    Token failed for RELI...
+2026-01-24 18:24:15 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-24 18:24:15 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-24 18:24:15 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-24 18:24:17 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:15 ERROR    Kite client not initi...
+2026-01-24 18:24:18 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:15 ERROR    Kite client not initi...
+2026-01-24 18:24:19 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:15 ERROR    Kite client not initi...
+
+2026-01-24 18:24:20 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-24 18:24:20 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-24 18:24:20 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:24:21 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:20 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:22 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:20 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:24 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:20 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:24 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 18:24:24 ERROR    [Artemis Signals] Token failed for TCS (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 18:24:25 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:24 ERROR    Token failed for TCS ...
+2026-01-24 18:24:27 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:24 ERROR    Token failed for TCS ...
+2026-01-24 18:24:28 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:24 ERROR    Token failed for TCS ...
+2026-01-24 18:24:28 DEBUG    [Artemis Signals] No universe cache file found
+2026-01-24 18:24:28 INFO     [Artemis Signals] Refreshing universe from Kite API...
+
+2026-01-24 18:24:28 ERROR    [Artemis Signals] Kite client not initialized
+2026-01-24 18:24:30 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:28 ERROR    Kite client not initi...
+2026-01-24 18:24:31 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:28 ERROR    Kite client not initi...
+2026-01-24 18:24:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:28 ERROR    Kite client not initi...
+
+2026-01-24 18:24:32 WARNING  [Artemis Signals] Kite API fetch failed, attempting to load from cache...
+2026-01-24 18:24:32 DEBUG    [Artemis Signals] No universe cache file found
+
+2026-01-24 18:24:32 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:24:34 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:32 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:32 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:32 ERROR    CRITICAL: No universe...
+2026-01-24 18:24:36 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 18:24:36 ERROR    [Artemis Signals] Token failed for INFY (NSE): Incorrect `api_key` or `access_token`.
+2026-01-24 18:24:38 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:24:36 ERROR    Token failed for INFY...
+2026-01-24 18:24:40 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:24:36 ERROR    Token failed for INFY...
+2026-01-24 18:24:42 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:24:36 ERROR    Token failed for INFY...
+2026-01-24 18:37:47 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 18:37:47 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 18:37:47 ERROR    [Artemis Signals] No instrument_token in quote for RELIANCE (NSE)
+2026-01-24 18:37:50 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:37:47 ERROR    No instrument_token i...
+2026-01-24 18:37:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:37:47 ERROR    No instrument_token i...
+2026-01-24 18:37:53 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:37:47 ERROR    No instrument_token i...
+2026-01-24 18:37:58 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 18:37:58 ERROR    [Artemis Signals] No instrument_token in quote for TCS (NSE)
+2026-01-24 18:38:00 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:37:58 ERROR    No instrument_token i...
+2026-01-24 18:38:01 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:37:58 ERROR    No instrument_token i...
+2026-01-24 18:38:03 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:37:58 ERROR    No instrument_token i...
+
+2026-01-24 18:38:03 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: 'Asia/Kolkata'
+
+2026-01-24 18:38:03 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:38:04 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:03 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:06 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:38:03 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:07 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:38:03 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:07 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 18:38:07 ERROR    [Artemis Signals] No instrument_token in quote for INFY (NSE)
+2026-01-24 18:38:09 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:07 ERROR    No instrument_token i...
+
+2026-01-24 18:38:52 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:52 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:38:52 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:38:52 ERROR    CRITICAL: No universe...
+2026-01-24 18:38:52 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 18:38:52 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] No instrument_token in quote for RELIANCE (NSE)
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+
+2026-01-24 18:38:52 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 7947328684
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 792170912
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 1387766875
+2026-01-24 18:38:52 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] No instrument_token in quote for TCS (NSE)
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+
+2026-01-24 18:38:52 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 7947328684
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 792170912
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 1387766875
+2026-01-24 18:38:52 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 18:38:52 ERROR    [Artemis Signals] No instrument_token in quote for INFY (NSE)
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+2026-01-24 18:38:52 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 18:38:52 ERROR    No instrument_token i...
+
+2026-01-24 19:50:32 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:50:32 ERROR    CRITICAL: No universe...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:50:32 ERROR    CRITICAL: No universe...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:50:32 ERROR    CRITICAL: No universe...
+2026-01-24 19:50:32 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 19:50:32 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] No instrument_token in quote for RELIANCE (NSE) and no token in universe
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+
+2026-01-24 19:50:32 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 7947328684
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 792170912
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 1387766875
+2026-01-24 19:50:32 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] No instrument_token in quote for TCS (NSE) and no token in universe
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+
+2026-01-24 19:50:32 WARNING  [Artemis Signals] Failed to load universe via UniverseManager: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] CRITICAL: No universe data found. Returning empty DataFrame.
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 7947328684
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 792170912
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] Duplicate Telegram message suppressed for 1387766875
+2026-01-24 19:50:32 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 19:50:32 ERROR    [Artemis Signals] No instrument_token in quote for INFY (NSE) and no token in universe
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:50:32 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:50:32 ERROR    No instrument_token i...
+2026-01-24 19:55:33 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 19:55:33 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 19:55:33 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:33 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:33 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals] [NO DATA] RELIANCE 5minute: API returned empty
+2026-01-24 19:55:33 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:33 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:33 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:33 WARNING  [Artemis Signals] [NO DATA] RELIANCE day: API returned empty
+
+2026-01-24 19:55:35 ERROR    [Artemis Signals] Aggregation failed for RELIANCE: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+2026-01-24 19:55:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:55:35 ERROR    Aggregation failed fo...
+2026-01-24 19:55:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:55:35 ERROR    Aggregation failed fo...
+2026-01-24 19:55:35 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:55:35 ERROR    Aggregation failed fo...
+2026-01-24 19:55:35 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 19:55:35 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:35 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:35 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] [NO DATA] TCS 5minute: API returned empty
+2026-01-24 19:55:35 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:35 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:35 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] [NO DATA] TCS day: API returned empty
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 19:55:35 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 19:55:35 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 19:55:35 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:35 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:35 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] [NO DATA] INFY 5minute: API returned empty
+2026-01-24 19:55:35 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:35 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:35 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] [NO DATA] INFY day: API returned empty
+
+2026-01-24 19:55:35 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 19:55:35 INFO     [Artemis Signals] ✅ Aggregation complete for INFY
+2026-01-24 19:55:41 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 19:55:41 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 19:55:41 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:41 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:41 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals] [NO DATA] RELIANCE 5minute: API returned empty
+2026-01-24 19:55:41 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:41 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:41 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:41 WARNING  [Artemis Signals] [NO DATA] RELIANCE day: API returned empty
+
+2026-01-24 19:55:42 ERROR    [Artemis Signals] Aggregation failed for RELIANCE: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+2026-01-24 19:55:42 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:55:42 ERROR    Aggregation failed fo...
+2026-01-24 19:55:42 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:55:42 ERROR    Aggregation failed fo...
+2026-01-24 19:55:42 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:55:42 ERROR    Aggregation failed fo...
+2026-01-24 19:55:42 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 19:55:42 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:42 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:42 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] [NO DATA] TCS 5minute: API returned empty
+2026-01-24 19:55:42 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:42 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:42 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] [NO DATA] TCS day: API returned empty
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 19:55:42 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 19:55:42 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 19:55:42 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:42 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:42 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] [NO DATA] INFY 5minute: API returned empty
+2026-01-24 19:55:42 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:42 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:42 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] [NO DATA] INFY day: API returned empty
+
+2026-01-24 19:55:42 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 19:55:42 INFO     [Artemis Signals] ✅ Aggregation complete for INFY
+2026-01-24 19:55:56 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 19:55:56 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 19:55:56 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:56 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:56 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals] [NO DATA] RELIANCE 5minute: API returned empty
+2026-01-24 19:55:56 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:56 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:56 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:56 WARNING  [Artemis Signals] [NO DATA] RELIANCE day: API returned empty
+
+2026-01-24 19:55:57 ERROR    [Artemis Signals] Aggregation failed for RELIANCE: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+2026-01-24 19:55:57 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:55:57 ERROR    Aggregation failed fo...
+2026-01-24 19:55:57 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:55:57 ERROR    Aggregation failed fo...
+2026-01-24 19:55:57 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:55:57 ERROR    Aggregation failed fo...
+2026-01-24 19:55:57 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 19:55:57 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:57 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:57 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] [NO DATA] TCS 5minute: API returned empty
+2026-01-24 19:55:57 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:57 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:57 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] [NO DATA] TCS day: API returned empty
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 19:55:57 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 19:55:57 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 19:55:57 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:55:57 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:57 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] [NO DATA] INFY 5minute: API returned empty
+2026-01-24 19:55:57 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:55:57 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:55:57 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] [NO DATA] INFY day: API returned empty
+
+2026-01-24 19:55:57 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 19:55:57 INFO     [Artemis Signals] ✅ Aggregation complete for INFY
+2026-01-24 19:57:34 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 19:57:34 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 19:57:34 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:57:34 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:34 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals] [NO DATA] RELIANCE 5minute: API returned empty
+2026-01-24 19:57:34 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:57:34 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:34 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:57:34 WARNING  [Artemis Signals] [NO DATA] RELIANCE day: API returned empty
+
+2026-01-24 19:57:36 ERROR    [Artemis Signals] Aggregation failed for RELIANCE: cannot import name 'KiteTicker' from 'kiteconnect' (unknown location)
+2026-01-24 19:57:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 7947328684: 2026-01-24 19:57:36 ERROR    Aggregation failed fo...
+2026-01-24 19:57:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 792170912: 2026-01-24 19:57:36 ERROR    Aggregation failed fo...
+2026-01-24 19:57:36 DEBUG    [Artemis Signals] [OK] Telegram sent to 1387766875: 2026-01-24 19:57:36 ERROR    Aggregation failed fo...
+2026-01-24 19:57:36 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 19:57:36 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:57:36 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:36 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] [NO DATA] TCS 5minute: API returned empty
+2026-01-24 19:57:36 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:57:36 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:36 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] [NO DATA] TCS day: API returned empty
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 19:57:36 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 19:57:36 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 19:57:36 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 19:57:36 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [Batch 1] Error 2025-11-20 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:36 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 4 batches
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] [NO DATA] INFY 5minute: API returned empty
+2026-01-24 19:57:36 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 19:57:36 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [Batch 1] Error 2025-01-24 to 2026-01-24: '_KiteConnect' object has no attribute 'historical_data'
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals]   [EARLY EXIT] First batch error - stopping download attempts
+2026-01-24 19:57:36 INFO     [Artemis Signals] Batching complete: Got 0 total rows across 1 batches
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] [NO DATA] INFY day: API returned empty
+
+2026-01-24 19:57:36 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 19:57:36 INFO     [Artemis Signals] ✅ Aggregation complete for INFY
+2026-01-24 20:17:56 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 20:17:56 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 20:17:56 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 20:17:56 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 20:17:56 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+2026-01-24 20:17:56 DEBUG    [Artemis Signals]     [OK] Got 198 rows
+2026-01-24 20:17:56 DEBUG    [Artemis Signals]   [Batch 2/4] 2025-08-12 to 2025-11-19 (100 days)
+2026-01-24 20:17:56 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:17:57 DEBUG    [Artemis Signals]   [Batch 3/4] 2025-05-04 to 2025-08-11 (100 days)
+2026-01-24 20:17:57 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:17:57 DEBUG    [Artemis Signals]   [Batch 4/4] 2025-01-24 to 2025-05-03 (100 days)
+2026-01-24 20:17:57 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:17:57 INFO     [Artemis Signals] Batching complete: Got 1098 total rows across 4 batches
+2026-01-24 20:17:58 INFO     [Artemis Signals] [OK] RELIANCE 5minute: 1098 total rows | Dates: 2025-01-24 to 2026-01-24
+2026-01-24 20:17:58 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 20:17:58 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+2026-01-24 20:17:58 DEBUG    [Artemis Signals]     [OK] Got 366 rows
+2026-01-24 20:17:59 INFO     [Artemis Signals] Batching complete: Got 366 total rows across 1 batches
+2026-01-24 20:17:59 INFO     [Artemis Signals] [OK] RELIANCE day: 366 total rows | Dates: 2025-01-24 to 2026-01-24
+
+2026-01-24 20:18:03 WARNING  [Artemis Signals] 5-minute data not found for RELIANCE
+2026-01-24 20:18:03 INFO     [Artemis Signals] ✅ Aggregation complete for RELIANCE
+2026-01-24 20:18:03 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 20:18:03 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 20:18:03 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 20:18:03 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+2026-01-24 20:18:03 DEBUG    [Artemis Signals]     [OK] Got 198 rows
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]   [Batch 2/4] 2025-08-12 to 2025-11-19 (100 days)
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]   [Batch 3/4] 2025-05-04 to 2025-08-11 (100 days)
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]   [Batch 4/4] 2025-01-24 to 2025-05-03 (100 days)
+2026-01-24 20:18:04 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:05 INFO     [Artemis Signals] Batching complete: Got 1098 total rows across 4 batches
+2026-01-24 20:18:05 INFO     [Artemis Signals] [OK] TCS 5minute: 1098 total rows | Dates: 2025-01-24 to 2026-01-24
+2026-01-24 20:18:05 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 20:18:05 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+2026-01-24 20:18:05 DEBUG    [Artemis Signals]     [OK] Got 366 rows
+2026-01-24 20:18:06 INFO     [Artemis Signals] Batching complete: Got 366 total rows across 1 batches
+2026-01-24 20:18:06 INFO     [Artemis Signals] [OK] TCS day: 366 total rows | Dates: 2025-01-24 to 2026-01-24
+
+2026-01-24 20:18:06 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 20:18:06 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 20:18:06 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 20:18:06 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 20:18:06 INFO     [Artemis Signals] Downloading 5minute: Created 4 batches (100 days each) - Recent First
+2026-01-24 20:18:06 DEBUG    [Artemis Signals]   [Batch 1/4] 2025-11-20 to 2026-01-24 (66 days)
+2026-01-24 20:18:06 DEBUG    [Artemis Signals]     [OK] Got 198 rows
+2026-01-24 20:18:06 DEBUG    [Artemis Signals]   [Batch 2/4] 2025-08-12 to 2025-11-19 (100 days)
+2026-01-24 20:18:06 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:07 DEBUG    [Artemis Signals]   [Batch 3/4] 2025-05-04 to 2025-08-11 (100 days)
+2026-01-24 20:18:07 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:07 DEBUG    [Artemis Signals]   [Batch 4/4] 2025-01-24 to 2025-05-03 (100 days)
+2026-01-24 20:18:07 DEBUG    [Artemis Signals]     [OK] Got 300 rows
+2026-01-24 20:18:07 INFO     [Artemis Signals] Batching complete: Got 1098 total rows across 4 batches
+2026-01-24 20:18:07 INFO     [Artemis Signals] [OK] INFY 5minute: 1098 total rows | Dates: 2025-01-24 to 2026-01-24
+2026-01-24 20:18:08 INFO     [Artemis Signals] Downloading day: Created 1 batches (1000 days each) - Recent First
+2026-01-24 20:18:08 DEBUG    [Artemis Signals]   [Batch 1/1] 2025-01-24 to 2026-01-24 (366 days)
+2026-01-24 20:18:08 DEBUG    [Artemis Signals]     [OK] Got 366 rows
+2026-01-24 20:18:08 INFO     [Artemis Signals] Batching complete: Got 366 total rows across 1 batches
+2026-01-24 20:18:08 INFO     [Artemis Signals] [OK] INFY day: 366 total rows | Dates: 2025-01-24 to 2026-01-24
+
+2026-01-24 20:18:09 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 20:18:09 INFO     [Artemis Signals] ✅ Aggregation complete for INFY
+2026-01-24 20:18:14 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] RELIANCE
+2026-01-24 20:18:14 INFO     [Artemis Signals] ✅ KiteConnect initialized for worker (token: d0u0CqBImhZeU2ECRGfy...)
+
+2026-01-24 20:18:14 WARNING  [Artemis Signals] Using instrument token from universe for RELIANCE (NSE)
+2026-01-24 20:18:14 INFO     [Artemis Signals] [UP-TO-DATE] RELIANCE 5minute: Already has latest data through 2026-01-24
+2026-01-24 20:18:14 INFO     [Artemis Signals] [UP-TO-DATE] RELIANCE day: Already has latest data through 2026-01-24
+
+2026-01-24 20:18:16 WARNING  [Artemis Signals] 5-minute data not found for RELIANCE
+2026-01-24 20:18:16 INFO     [Artemis Signals] ✅ Aggregation complete for RELIANCE
+2026-01-24 20:18:16 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] TCS
+
+2026-01-24 20:18:16 WARNING  [Artemis Signals] Using instrument token from universe for TCS (NSE)
+2026-01-24 20:18:16 INFO     [Artemis Signals] [UP-TO-DATE] TCS 5minute: Already has latest data through 2026-01-24
+2026-01-24 20:18:16 INFO     [Artemis Signals] [UP-TO-DATE] TCS day: Already has latest data through 2026-01-24
+
+2026-01-24 20:18:16 WARNING  [Artemis Signals] 5-minute data not found for TCS
+2026-01-24 20:18:16 INFO     [Artemis Signals] ✅ Aggregation complete for TCS
+2026-01-24 20:18:16 INFO     [Artemis Signals] ⬇️  Starting download for [NSE] INFY
+
+2026-01-24 20:18:16 WARNING  [Artemis Signals] Using instrument token from universe for INFY (NSE)
+2026-01-24 20:18:16 INFO     [Artemis Signals] [UP-TO-DATE] INFY 5minute: Already has latest data through 2026-01-24
+2026-01-24 20:18:16 INFO     [Artemis Signals] [UP-TO-DATE] INFY day: Already has latest data through 2026-01-24
+
+2026-01-24 20:18:16 WARNING  [Artemis Signals] 5-minute data not found for INFY
+2026-01-24 20:18:16 INFO     [Artemis Signals] ✅ Aggregation complete for INFY

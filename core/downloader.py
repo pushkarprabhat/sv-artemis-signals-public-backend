@@ -150,8 +150,9 @@ def download_price_data(symbol, force_refresh=False):
         universe = load_universe()
         row = universe[universe['Symbol'] == symbol].iloc[0]
         exchange = row['Exchange']
-    except:
+    except Exception:
         exchange = "NSE"  # fallback
+        row = {}
         
     logger.info(f"⬇️  Starting download for [{exchange}] {symbol}")
 
@@ -162,18 +163,30 @@ def download_price_data(symbol, force_refresh=False):
             logger.error(f"KiteConnect not initialized for {symbol}")
             return False
         quote = kite.ltp(f"{exchange}:{symbol}")
-        
+
         # Safe token extraction with better error handling
         if not quote or len(quote) == 0:
             logger.error(f"No quote data for {symbol} ({exchange}) - may be an index or illiquid security")
             return False
-        
+
         quote_data = list(quote.values())[0]
-        if "instrument_token" not in quote_data:
-            logger.error(f"No instrument_token in quote for {symbol} ({exchange})")
-            return False
-        
-        token = quote_data["instrument_token"]
+
+        # Prefer instrument_token from LTP response, but fall back to universe cache
+        token = None
+        if isinstance(quote_data, dict) and "instrument_token" in quote_data:
+            token = quote_data["instrument_token"]
+        else:
+            # Try common universe column names
+            try:
+                token = row.get('InstrumentToken') or row.get('instrument_token') or row.get('instrumentToken')
+            except Exception:
+                token = None
+
+            if token:
+                logger.warning(f"Using instrument token from universe for {symbol} ({exchange})")
+            else:
+                logger.error(f"No instrument_token in quote for {symbol} ({exchange}) and no token in universe")
+                return False
     except IndexError as e:
         logger.error(f"Quote parsing failed for {symbol} ({exchange}): {e} - symbol may not be tradeable")
         return False
