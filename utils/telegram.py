@@ -7,6 +7,16 @@ import requests
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
 from utils.logger import logger
 from datetime import datetime
+import time
+import threading
+import hashlib
+
+# In-memory dedupe cache to avoid sending duplicate Telegram messages
+# Key: message_hash -> timestamp_sent
+_last_sent_lock = threading.Lock()
+_last_sent = {}
+# TTL in seconds to suppress duplicate messages (short window)
+_DUPLICATE_TTL = 30
 
 # --- STARTUP CHECK: Warn if TELEGRAM_TOKEN is missing ---
 if not TELEGRAM_TOKEN:
@@ -47,6 +57,23 @@ def send_telegram(message: str, error: bool = False, chat_ids: list = None) -> b
         timestamp = datetime.now().strftime("%H:%M:%S")
         prefix = "📢 "
         full_message = f"{prefix}[Artemis] [{timestamp}] {message}"
+        # Dedupe: compute short hash of the message and skip if recently sent
+        h = hashlib.sha256(full_message.encode('utf-8')).hexdigest()
+        now_ts = time.time()
+        try:
+            with _last_sent_lock:
+                last = _last_sent.get(h)
+                if last and (now_ts - last) < _DUPLICATE_TTL:
+                    logger.debug("Duplicate Telegram message suppressed")
+                    return False
+                _last_sent[h] = now_ts
+                # Cleanup old entries opportunistically
+                keys_to_delete = [k for k, v in _last_sent.items() if now_ts - v > _DUPLICATE_TTL]
+                for k in keys_to_delete:
+                    _last_sent.pop(k, None)
+        except Exception:
+            # best-effort dedupe; don't let failures block sending
+            pass
         
         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
         
