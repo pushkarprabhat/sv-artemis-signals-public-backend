@@ -31,6 +31,7 @@ from core.broker_adapter import BrokerAdapter
 import config
 
 logger = logging.getLogger(config.LOGGER_NAME)
+from utils.failure_logger import record_failure
 
 
 class TradeManager:
@@ -261,6 +262,10 @@ class TradeManager:
                 
         except Exception as e:
             logger.error(f"Trade execution failed: {e}")
+            try:
+                record_failure(symbol=signal.get('pair') if isinstance(signal, dict) else None, exchange=None, reason="trade_execution_failed", details=str(e))
+            except Exception:
+                pass
             return False, f"Error: {str(e)}"
     
     def close_pair_trade(self, pair_id: str) -> Tuple[bool, str]:
@@ -329,6 +334,10 @@ class TradeManager:
                     
         except Exception as e:
             logger.error(f"Close trade failed: {e}")
+            try:
+                record_failure(symbol=pair_id, exchange=None, reason="trade_close_failed", details=str(e))
+            except Exception:
+                pass
             return False, f"Error: {str(e)}"
     
     def get_open_positions(self) -> List[Dict]:

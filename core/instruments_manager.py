@@ -13,6 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from config import BASE_DIR
 from utils.logger import logger
+from utils.failure_logger import record_failure
 
 # Instruments data directory
 INSTRUMENTS_DIR = BASE_DIR.parent / 'instruments'
@@ -46,6 +47,10 @@ class InstrumentsManager:
                 logger.info(f"Loaded {len(self.instruments)} instruments from cache")
             except Exception as e:
                 logger.warning(f"Failed to load instruments cache: {e}")
+                try:
+                    record_failure(symbol=None, exchange=None, reason="instruments_cache_load_failed", details=str(e))
+                except Exception:
+                    pass
         
         if DERIVATIVES_METADATA.exists():
             try:
@@ -53,6 +58,10 @@ class InstrumentsManager:
                 logger.info(f"Loaded derivatives metadata for {len(self.derivatives_metadata)} symbols")
             except Exception as e:
                 logger.warning(f"Failed to load derivatives metadata: {e}")
+                try:
+                    record_failure(symbol=None, exchange=None, reason="derivatives_metadata_load_failed", details=str(e))
+                except Exception:
+                    pass
         
         if DERIVATIVES_EXPIRIES.exists():
             try:
@@ -60,6 +69,10 @@ class InstrumentsManager:
                 logger.info(f"Loaded expiries for {len(self.expiries)} symbols")
             except Exception as e:
                 logger.warning(f"Failed to load expiries: {e}")
+                try:
+                    record_failure(symbol=None, exchange=None, reason="derivatives_expiries_load_failed", details=str(e))
+                except Exception:
+                    pass
     
     def check_for_updates(self) -> bool:
         """Check if instruments list needs updating (daily)
@@ -135,6 +148,10 @@ class InstrumentsManager:
         
         except Exception as e:
             logger.error(f"Failed to download instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="download_all_instruments_failed", details=str(e))
+            except Exception:
+                pass
             return {}
     
     def _download_equities(self) -> Dict:
@@ -164,6 +181,10 @@ class InstrumentsManager:
         
         except Exception as e:
             logger.warning(f"Failed to download equities: {e}")
+            try:
+                record_failure(symbol=None, exchange="NSE", reason="equities_download_failed", details=str(e))
+            except Exception:
+                pass
         
         return equities
     
@@ -262,6 +283,10 @@ class InstrumentsManager:
         
         except Exception as e:
             logger.warning(f"Failed to download derivatives: {e}")
+            try:
+                record_failure(symbol=None, exchange="NSE", reason="derivatives_download_failed", details=str(e))
+            except Exception:
+                pass
         
         return futures, options
     
@@ -330,6 +355,10 @@ class InstrumentsManager:
         
         except Exception as e:
             logger.error(f"Failed to save instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="instruments_save_failed", details=str(e))
+            except Exception:
+                pass
     
     def get_instruments_by_type(self) -> Dict:
         """Get instruments organized by type

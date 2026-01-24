@@ -11,6 +11,7 @@ from typing import Dict, Optional, Tuple
 from enum import Enum
 import threading
 from utils.logger import logger
+from utils.failure_logger import record_failure
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -147,6 +148,10 @@ class TokenManager:
         
         except Exception as e:
             logger.error(f"Error loading token state: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="token_state_load_failed", details=str(e))
+            except Exception:
+                pass
     
     def _save_state(self):
         """Persist token state to disk"""
@@ -168,6 +173,10 @@ class TokenManager:
         
         except Exception as e:
             logger.error(f"Error saving token state: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="token_state_save_failed", details=str(e))
+            except Exception:
+                pass
     
     def register_token(self, provider_id: str, token_type: str = "access_token",
                       expires_in_days: int = 180, metadata: Dict = None):
@@ -245,6 +254,10 @@ class TokenManager:
             
             except Exception as e:
                 logger.error(f"Token validation error for {provider_id}: {e}")
+                try:
+                    record_failure(symbol=None, exchange=None, reason="token_validation_error", details=f"provider={provider_id};err={e}")
+                except Exception:
+                    pass
                 token_info.error_message = str(e)
                 token_info.validation_status = TokenStatus.INVALID
                 return TokenStatus.INVALID
@@ -282,6 +295,10 @@ class TokenManager:
         
         except Exception as e:
             logger.debug(f"Kite token validation failed: {e}")
+            try:
+                record_failure(symbol=None, exchange="KITE", reason="kite_token_validation_failed", details=str(e))
+            except Exception:
+                pass
             token_info.validation_status = TokenStatus.EXPIRED
             token_info.error_message = str(e)
             self._save_state()
@@ -302,6 +319,10 @@ class TokenManager:
         
         except Exception as e:
             logger.error(f"HTTP validation failed for {provider_id}: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="http_token_validation_failed", details=f"provider={provider_id};err={e}")
+            except Exception:
+                pass
             token_info.validation_status = TokenStatus.INVALID
             return TokenStatus.INVALID
     

@@ -42,6 +42,7 @@ import pandas as pd
 from queue import Queue, Empty
 
 from kiteconnect import KiteTicker
+from utils.failure_logger import log_failure
 
 # Configure logging with UTF-8 encoding
 logger = logging.getLogger(__name__)
@@ -265,6 +266,11 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Subscription error: {e}")
+            try:
+                # Record subscription failures for triage (network/auth issues)
+                log_failure(symbol='websocket_subscribe', exchange='KITE', reason='subscribe_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log subscribe_error")
             return False
     
     
@@ -293,6 +299,10 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Unsubscription error: {e}")
+            try:
+                log_failure(symbol='websocket_unsubscribe', exchange='KITE', reason='unsubscribe_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log unsubscribe_error")
             return False
     
     
@@ -330,10 +340,18 @@ class KiteWebsocket:
                 time.sleep(0.1)
             
             logger.error("[WEBSOCKET] Connection timeout")
+            try:
+                log_failure(symbol='websocket_connect', exchange='KITE', reason='connection_timeout', details='timeout waiting for on_connect')
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log connection_timeout")
             return False
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Connection error: {e}")
+            try:
+                log_failure(symbol='websocket_connect', exchange='KITE', reason='connection_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log connection_error")
             return False
     
     
@@ -356,6 +374,10 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Disconnection error: {e}")
+            try:
+                log_failure(symbol='websocket_disconnect', exchange='KITE', reason='disconnection_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log disconnection_error")
             return False
     
     
@@ -382,6 +404,10 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Start error: {e}")
+            try:
+                log_failure(symbol='websocket_start', exchange='KITE', reason='start_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log start_error")
             self._running = False
             return False
     
@@ -401,6 +427,10 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Stop error: {e}")
+            try:
+                log_failure(symbol='websocket_stop', exchange='KITE', reason='stop_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log stop_error")
             return False
     
     
@@ -441,6 +471,11 @@ class KiteWebsocket:
         
         except Exception as e:
             logger.error(f"[WEBSOCKET] Message parsing error: {e}")
+            try:
+                # Record parsing errors for message diagnostics
+                log_failure(symbol='websocket_message', exchange='KITE', reason='message_parsing_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log message_parsing_error")
     
     
     def _on_error(self, ws, error):
@@ -457,6 +492,10 @@ class KiteWebsocket:
                 self._on_error_callback(error)
             except Exception as e:
                 logger.error(f"[WEBSOCKET] Error callback failed: {e}")
+                try:
+                    log_failure(symbol='websocket_error_callback', exchange='KITE', reason='error_callback_failed', details=str(e))
+                except Exception:
+                    logger.debug("[FAILURE_LOG] Could not log error_callback_failed")
     
     
     def _on_close(self, ws):
@@ -486,6 +525,10 @@ class KiteWebsocket:
                 return self._parse_full(message)
         except Exception as e:
             logger.error(f"[WEBSOCKET] Parse error ({self.mode}): {e}")
+            try:
+                log_failure(symbol='websocket_parse', exchange='KITE', reason='parse_error', details=f"mode={self.mode} error={e}")
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log parse_error")
             return None
     
     
@@ -508,6 +551,10 @@ class KiteWebsocket:
             )
         except Exception as e:
             logger.debug(f"[WEBSOCKET] LTP parse error: {e}")
+            try:
+                log_failure(symbol='websocket_parse_ltp', exchange='KITE', reason='ltp_parse_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log ltp_parse_error")
             return None
     
     
@@ -558,6 +605,10 @@ class KiteWebsocket:
             )
         except Exception as e:
             logger.debug(f"[WEBSOCKET] Quote parse error: {e}")
+            try:
+                log_failure(symbol='websocket_parse_quote', exchange='KITE', reason='quote_parse_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log quote_parse_error")
             return None
     
     
@@ -598,6 +649,10 @@ class KiteWebsocket:
             )
         except Exception as e:
             logger.debug(f"[WEBSOCKET] Full parse error: {e}")
+            try:
+                log_failure(symbol='websocket_parse_full', exchange='KITE', reason='full_parse_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log full_parse_error")
             return None
     
     

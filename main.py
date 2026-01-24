@@ -13,6 +13,33 @@ import smtplib
 from email.mime.text import MIMEText
 import config as artemis_config
 from config import SIGNALS_PATH
+def download_all_price_data():
+    """
+    Stub for price data download. Replace with actual implementation.
+    """
+    # Simulate download for 4400+ assets
+    import time
+    time.sleep(2)
+    return True
+
+def download_and_save_atm_iv():
+    """
+    Stub for IV download. Replace with actual implementation.
+    """
+    # Simulate IV download
+    import time
+    time.sleep(2)
+    return True
+
+# Ensure scheduler status is always visible
+if 'eod_bod_status' not in st.session_state:
+    st.session_state.eod_bod_status = {'bod_status': 'Pending', 'eod_status': 'Pending'}
+
+# Sidebar and quick actions always show content
+def show_sidebar_content():
+    st.sidebar.markdown("### Artemis Navigation")
+    st.sidebar.info("Use the sidebar to access Live Scanner, Analyser, Trades, and Reports.")
+show_sidebar_content()
 
 def send_email_reminder(subject, body, to_email):
     try:

@@ -18,6 +18,7 @@ import logging
 from config import BASE_DIR, INSTRUMENTS_DIR
 
 logger = logging.getLogger(__name__)
+from utils.failure_logger import record_failure
 
 
 # =============================================================================
@@ -188,6 +189,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Error fetching from Kite: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_fetch_error", details=str(e))
+            except Exception:
+                pass
             return False, {"error": str(e)}
     
     def fetch_from_kite_api_endpoint(self, api_url: str, headers: Dict, 
@@ -262,10 +267,18 @@ class KiteInstrumentsManager:
         except requests.exceptions.RequestException as e:
             result.error = f"HTTP error: {e}"
             logger.error(result.error)
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_http_error", details=result.error)
+            except Exception:
+                pass
             return result
         except Exception as e:
             result.error = str(e)
             logger.error(f"Error: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_fetch_generic_error", details=str(e))
+            except Exception:
+                pass
             return result
     
     def _parse_instruments_csv(self, csv_text: str) -> List[KiteInstrument]:
@@ -327,6 +340,10 @@ class KiteInstrumentsManager:
                     
                 except Exception as e:
                     logger.warning(f"Error parsing row {row_idx}: {e}")
+                    try:
+                        record_failure(symbol=None, exchange=None, reason="instrument_row_parse_error", details=f"row={row_idx};err={e}")
+                    except Exception:
+                        pass
                     continue
             
             logger.info(f"Parsed {len(instruments)} instruments from CSV")
@@ -334,6 +351,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Error parsing CSV: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="parse_csv_failed", details=str(e))
+            except Exception:
+                pass
             return []
     
     def _process_instruments(self, instruments_data: Any, exchange: Optional[str]) -> Tuple[bool, Dict]:
@@ -402,6 +423,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Error processing instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="process_instruments_failed", details=str(e))
+            except Exception:
+                pass
             return False, {"error": str(e)}
     
     # =========================================================================
@@ -451,6 +476,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Error saving instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_instruments_save_failed", details=str(e))
+            except Exception:
+                pass
             return False, str(e)
     
     def _detect_changes(self, exchange: str, old: Dict, new: Dict) -> Optional[Dict]:
@@ -495,6 +524,10 @@ class KiteInstrumentsManager:
             logger.info(f"Wrote {len(instruments)} instruments to {json_file}")
         except Exception as e:
             logger.error(f"Failed to write JSON: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_write_json_failed", details=str(e))
+            except Exception:
+                pass
         
         # Write Parquet for efficient querying
         parquet_file = ex_dir / "current.parquet"
@@ -505,6 +538,10 @@ class KiteInstrumentsManager:
             logger.info(f"Wrote {len(df)} instruments to {parquet_file}")
         except Exception as e:
             logger.warning(f"Failed to write Parquet: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_write_parquet_failed", details=str(e))
+            except Exception:
+                pass
     
     def _archive_instruments(self, exchange: str, change_summary: Dict) -> None:
         """Archive old instruments"""
@@ -524,6 +561,10 @@ class KiteInstrumentsManager:
             logger.info(f"Archived to {archive_file}")
         except Exception as e:
             logger.error(f"Failed to archive: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_archive_failed", details=str(e))
+            except Exception:
+                pass
     
     # =========================================================================
     # LOADING
@@ -536,6 +577,10 @@ class KiteInstrumentsManager:
                 self._load_instruments(exchange.value)
         except Exception as e:
             logger.error(f"Error loading instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="kite_load_all_failed", details=str(e))
+            except Exception:
+                pass
     
     def _load_instruments(self, exchange: str) -> None:
         """Load instruments for specific exchange"""
@@ -559,6 +604,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Failed to load {exchange} instruments: {e}")
+            try:
+                record_failure(symbol=None, exchange=exchange, reason="kite_load_exchange_failed", details=str(e))
+            except Exception:
+                pass
     
     # =========================================================================
     # QUERYING
@@ -654,6 +703,10 @@ class KiteInstrumentsManager:
             
         except Exception as e:
             logger.error(f"Failed to create DataFrame: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="kite_to_dataframe_failed", details=str(e))
+            except Exception:
+                pass
             return pd.DataFrame()
     
     def get_statistics(self, exchange: Optional[str] = None) -> Dict:

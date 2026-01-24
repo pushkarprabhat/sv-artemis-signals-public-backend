@@ -34,26 +34,54 @@ def test_universe():
     assert r.status_code == 200
     assert "data" in r.json()
 
-# Signals
-def test_signals():
-    r = requests.get(f"{API_URL}/signals")
-    assert r.status_code == 200
-    assert isinstance(r.json(), list)
 
-# EOD job
+# Entry Signal
+def test_entry_signal():
+    r = requests.get(f"{API_URL}/api/v1/signal/entry")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+    assert "signal" in data
+
+# Exit Signal
+def test_exit_signal():
+    r = requests.get(f"{API_URL}/api/v1/signal/exit")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+    assert "signal" in data
+
+# Paper Trading
+def test_paper_trading():
+    r = requests.get(f"{API_URL}/api/v1/papertrading")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+
+# Marketdata Download
+def test_marketdata_download():
+    r = requests.get(f"{API_URL}/api/v1/data/download")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+
+# Marketdata Refresh
+def test_marketdata_refresh():
+    r = requests.get(f"{API_URL}/api/v1/data/refresh")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["status"] == "ok"
+
+# EOD Job
 def test_eod_job():
-    r = requests.get(f"{API_URL}/eod/status")
+    r = requests.get(f"{API_URL}/api/v1/eod")
     assert r.status_code == 200
-    assert "last_run" in r.json()
+    data = r.json()
+    assert data["status"] in ["success", "skipped"]
 
-# Debt tracker
-def test_debt_tracker():
-    r = requests.get(f"{API_URL}/debt")
+# BOD Job
+def test_bod_job():
+    r = requests.get(f"{API_URL}/api/v1/bod")
     assert r.status_code == 200
-    assert "debt" in r.json()
-
-# Motivational message
-def test_motivation():
-    r = requests.get(f"{API_URL}/motivation")
-    assert r.status_code == 200
-    assert "Shivaansh" in r.text or "Krishaansh" in r.text
+    data = r.json()
+    assert data["status"] in ["success", "skipped"]

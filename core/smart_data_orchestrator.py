@@ -11,6 +11,7 @@ import threading
 import pandas as pd
 from pathlib import Path
 import json
+from utils.failure_logger import log_failure
 
 logger = logging.getLogger(__name__)
 
@@ -133,6 +134,10 @@ class SmartDataOrchestrator:
         # Start real-time stream
         if not self.realtime_stream.start(symbols):
             logger.error("Failed to start real-time stream")
+            try:
+                log_failure(symbol='smart_orchestrator', exchange='KITE', reason='realtime_stream_start_failed', details='realtime_stream.start returned False')
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log realtime_stream_start_failed")
             return False
         
         # Register quote processor for hybrid data refresh
@@ -169,6 +174,10 @@ class SmartDataOrchestrator:
                 logger.debug(f"CSV refreshed: {symbol} ({interval})")
             except Exception as e:
                 logger.error(f"CSV refresh failed: {symbol} - {e}")
+                try:
+                    log_failure(symbol=symbol, exchange='LOCAL', reason='csv_refresh_failed', details=str(e))
+                except Exception:
+                    logger.debug("[FAILURE_LOG] Could not log csv_refresh_failed")
         
         # Run in thread pool
         thread = threading.Thread(target=refresh_task, daemon=True)
@@ -184,6 +193,10 @@ class SmartDataOrchestrator:
                 callback(bar)
             except Exception as e:
                 logger.error(f"Signal callback error: {e}")
+                try:
+                    log_failure(symbol=bar.symbol if hasattr(bar, 'symbol') else 'signal_callback', exchange='LOCAL', reason='signal_callback_error', details=str(e))
+                except Exception:
+                    logger.debug("[FAILURE_LOG] Could not log signal_callback_error")
     
     def register_signal_callback(self, callback: Callable):
         """
@@ -216,6 +229,10 @@ class SmartDataOrchestrator:
             return None
         except Exception as e:
             logger.error(f"Failed to load {symbol} data: {e}")
+            try:
+                log_failure(symbol=symbol, exchange='LOCAL', reason='intraday_load_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log intraday_load_failed")
             return None
     
     def get_live_price(self, symbol: str) -> Optional[float]:
@@ -335,6 +352,10 @@ class InstantSignalEvaluator:
         
         except Exception as e:
             logger.error(f"Signal evaluation error: {e}")
+            try:
+                log_failure(symbol=bar.symbol if hasattr(bar, 'symbol') else 'signal_eval', exchange='LOCAL', reason='signal_evaluation_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log signal_evaluation_error")
     
     def _log_signal(self, symbol: str, interval: str, signals: Dict, price: float):
         """Log signal detection"""

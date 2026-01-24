@@ -29,6 +29,8 @@ class KiteDataDownloader:
         """
         self.kite = kite
         self.fallback_available = False
+        # Load instrument mapping (tradingsymbol/display_name/kite_symbol -> instrument_token)
+        self.instrument_map = self._load_instrument_map()
         
         # Try to import yfinance as fallback
         try:
@@ -75,7 +77,7 @@ class KiteDataDownloader:
         try:
             # Convert symbol to NSE format if needed
             symbol_nse = f"{symbol}" if symbol.isupper() else symbol.upper()
-            
+
             # Kite interval mapping
             interval_map = {
                 'day': 'day',
@@ -87,10 +89,28 @@ class KiteDataDownloader:
             }
             
             interval = interval_map.get(timeframe, 'day')
-            
+            # Resolve instrument token: accept numeric token, tradingsymbol, kite_symbol or display_name
+            instrument_token = None
+
+            # If symbol looks like an integer token, use directly
+            try:
+                if str(symbol).isdigit():
+                    instrument_token = int(symbol)
+            except Exception:
+                instrument_token = None
+
+            # Lookup in instrument map (case-insensitive keys stored as upper())
+            if instrument_token is None:
+                lookup_key = str(symbol_nse).upper()
+                instrument_token = self.instrument_map.get(lookup_key)
+
+            if instrument_token is None:
+                logger.warning(f"[KITE] Could not resolve instrument token for '{symbol}' — aborting Kite call")
+                return None
+
             # Fetch historical data
             data = self.kite.historical_data(
-                instrument_token=None,  # Will be looked up
+                instrument_token=instrument_token,
                 from_date=start_date,
                 to_date=end_date,
                 interval=interval,
@@ -123,6 +143,66 @@ class KiteDataDownloader:
         except Exception as e:
             logger.error(f"Kite download error for {symbol}: {e}")
             return None
+
+    def _load_instrument_map(self):
+        """Load instrument mapping from known CSV locations.
+
+        Returns a dict mapping UPPER(tradingsymbol|kite_symbol|display_name) -> instrument_token (int)
+        """
+        candidates = [
+            Path('marketdata') / 'metadata' / 'enriched' / 'enriched_instruments.csv',
+            Path('universe') / 'app' / 'app_kite_universe.csv',
+            Path('marketdata') / 'metadata' / 'enriched' / 'instruments.csv'
+        ]
+
+        mapping = {}
+
+        for p in candidates:
+            try:
+                if not p.exists():
+                    continue
+
+                df = pd.read_csv(p)
+
+                # Normalise possible column names
+                token_col = None
+                for c in ['InstrumentToken', 'instrument_token', 'instrumentToken']:
+                    if c in df.columns:
+                        token_col = c
+                        break
+
+                # possible trading symbol columns
+                trad_cols = [c for c in ['tradingsymbol', 'kite_symbol', 'kiteSymbol', 'kite_symbol', 'display_name', 'tradingsymbol'.upper()] if c in df.columns]
+
+                if token_col is None:
+                    continue
+
+                for _, row in df.iterrows():
+                    try:
+                        token = int(row[token_col])
+                    except Exception:
+                        continue
+
+                    # Map multiple identifiers
+                    for key in ['tradingsymbol', 'kite_symbol', 'display_name', 'name', 'tradingsymbol'.upper()]:
+                        if key in df.columns:
+                            val = row.get(key)
+                            if pd.notna(val):
+                                mapping[str(val).upper()] = token
+
+                    # Also map 'name' and 'DISPLAY_NAME' variants
+                    for c in df.columns:
+                        if c.lower() in ('display_name', 'name', 'kite_symbol', 'tradingsymbol'):
+                            v = row.get(c)
+                            if pd.notna(v):
+                                mapping[str(v).upper()] = token
+
+            except Exception as e:
+                logger.debug(f"_load_instrument_map: failed to read {p}: {e}")
+                continue
+
+        logger.info(f"[KITE] Loaded instrument map with {len(mapping)} entries from candidate CSVs")
+        return mapping
     
     def _fallback_download(self, symbol, start_date, end_date, timeframe):
         """Fallback to yfinance if Kite fails"""

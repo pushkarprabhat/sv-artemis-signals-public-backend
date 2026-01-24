@@ -13,6 +13,8 @@ import hashlib
 from config import BASE_DIR
 from utils.logger import logger
 import utils.helpers
+from utils.failure_logger import log_failure
+from utils.instrument_exceptions import add_to_exceptions
 
 # Cache location
 UNIVERSE_CACHE_DIR = BASE_DIR.parent / "cache"
@@ -65,6 +67,11 @@ class UniverseManager:
                 )
         except Exception as e:
             logger.warning(f"Could not load universe metadata: {e}")
+            # Record metadata load failures for diagnostics — non-fatal
+            try:
+                log_failure(symbol='universe_metadata', exchange='LOCAL', reason='metadata_load_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log metadata_load_error")
             self._metadata = {}
     
     def _save_metadata(self, df: pd.DataFrame) -> None:
@@ -87,6 +94,11 @@ class UniverseManager:
             logger.debug(f"Universe metadata saved: {len(df)} instruments")
         except Exception as e:
             logger.error(f"Failed to save universe metadata: {e}")
+            # Saving metadata failed — persist for triage
+            try:
+                log_failure(symbol='universe_metadata', exchange='LOCAL', reason='metadata_save_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log metadata_save_error")
     
     def get_universe(self, force_refresh: bool = False) -> Optional[pd.DataFrame]:
         """
@@ -123,6 +135,11 @@ class UniverseManager:
             
             # If Kite API fails, try cache as fallback
             logger.warning("Kite API fetch failed, attempting to load from cache...")
+            # Record fetch failure for diagnostics; causes fallback to cache
+            try:
+                log_failure(symbol='universe_fetch', exchange='KITE', reason='fetch_failed', details='Kite API returned no data')
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log universe fetch_failed")
             df = self._load_from_cache()
             if df is not None:
                 self._universe_cache = df
@@ -150,6 +167,10 @@ class UniverseManager:
             return df
         except Exception as e:
             logger.error(f"Failed to load universe from cache: {e}")
+            try:
+                log_failure(symbol='universe_cache', exchange='LOCAL', reason='cache_load_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log cache_load_error")
             return None
     
     def _save_to_cache(self, df: pd.DataFrame) -> None:
@@ -225,6 +246,11 @@ class UniverseManager:
             logger.info(f"Saved universe to cache: {len(df_clean)} instruments")
         except Exception as e:
             logger.error(f"Failed to save universe to cache: {e}")
+            # Save failures here are important — surface for triage
+            try:
+                log_failure(symbol='universe_cache', exchange='LOCAL', reason='cache_save_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log cache_save_error")
     
     def _fetch_from_kite_api(self) -> Optional[pd.DataFrame]:
         """
@@ -275,12 +301,26 @@ class UniverseManager:
                                 time.sleep(wait_time)
                             else:
                                 logger.warning(f"Failed to fetch {exchange} after {max_retries} attempts: {e}")
+                                # Record repeated timeouts for this exchange
+                                try:
+                                    log_failure(symbol=f'universe_fetch_{exchange}', exchange=exchange, reason='fetch_timeout', details=str(e))
+                                except Exception:
+                                    logger.debug("[FAILURE_LOG] Could not log fetch_timeout")
                         else:
                             logger.warning(f"Failed to fetch {exchange}: {e}")
+                            # Non-timeout fetch error — record for triage
+                            try:
+                                log_failure(symbol=f'universe_fetch_{exchange}', exchange=exchange, reason='fetch_error', details=str(e))
+                            except Exception:
+                                logger.debug("[FAILURE_LOG] Could not log fetch_error")
                             break  # Don't retry on non-timeout errors
             
             if not all_instruments:
                 logger.error("Failed to fetch instruments from any exchange")
+                try:
+                    log_failure(symbol='universe_fetch', exchange='KITE', reason='no_instruments_fetched', details='no exchanges returned data')
+                except Exception:
+                    logger.debug("[FAILURE_LOG] Could not log no_instruments_fetched")
                 return None
             
             # Combine all exchanges
@@ -297,6 +337,10 @@ class UniverseManager:
             
         except Exception as e:
             logger.error(f"Error fetching from Kite API: {e}")
+            try:
+                log_failure(symbol='universe_fetch', exchange='KITE', reason='fetch_exception', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log fetch_exception")
             return None
     
     def _standardize_universe_columns(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -349,6 +393,10 @@ class UniverseManager:
             
         except Exception as e:
             logger.error(f"Error standardizing universe columns: {e}")
+            try:
+                log_failure(symbol='universe_standardize', exchange='LOCAL', reason='standardize_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log standardize_error")
             return df
     
     def _add_derived_columns(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -470,6 +518,10 @@ class UniverseManager:
         
         except Exception as e:
             logger.error(f"Error adding derived columns: {e}")
+            try:
+                log_failure(symbol='universe_derived', exchange='LOCAL', reason='derived_columns_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log derived_columns_error")
             return df
 
     

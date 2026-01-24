@@ -9,6 +9,7 @@ import datetime as dt
 from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
 import logging
+from utils.failure_logger import log_failure
 
 logger = logging.getLogger('websocket_aggregator')
 
@@ -68,6 +69,10 @@ class BarAggregator:
         """
         if timeframe not in self.TIMEFRAMES:
             logger.error(f"[ERROR] Unsupported timeframe: {timeframe}")
+            try:
+                log_failure(symbol=symbol or 'unknown', exchange='LOCAL', reason='unsupported_timeframe', details=f"timeframe={timeframe}")
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log unsupported_timeframe")
             return []
         
         # Process pending ticks first

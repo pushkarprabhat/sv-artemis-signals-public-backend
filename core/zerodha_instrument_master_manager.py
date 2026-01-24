@@ -13,6 +13,8 @@ from enum import Enum
 import threading
 import logging
 from config import BASE_DIR
+from utils.failure_logger import log_failure
+from utils.instrument_exceptions import add_to_exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -189,6 +191,13 @@ class ZerodhaInstrumentMasterManager:
                     
                 except Exception as e:
                     logger.warning(f"Error parsing instrument: {e}")
+                    # Record parsing issues for this instrument to aid debugging and triage
+                    try:
+                        sym = row.get('tradingsymbol') if isinstance(row, dict) else 'UNKNOWN'
+                        exch = row.get('segment') if isinstance(row, dict) else 'NSE'
+                        log_failure(symbol=str(sym), exchange=str(exch), reason='instrument_parse_error', details=str(e))
+                    except Exception:
+                        logger.debug("[FAILURE_LOG] Could not log instrument_parse_error")
                     continue
             
             if not new_instruments:
@@ -222,6 +231,10 @@ class ZerodhaInstrumentMasterManager:
             
         except Exception as e:
             logger.error(f"Error populating instruments: {e}")
+            try:
+                log_failure(symbol='instrument_population', exchange='KITE', reason='population_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log population_error")
             return False, {"error": str(e)}
     
     def _detect_changes(self, old: Dict[str, ZerodhaInstrument],
@@ -257,6 +270,10 @@ class ZerodhaInstrumentMasterManager:
             logger.info(f"Archived instruments to {archive_file}")
         except Exception as e:
             logger.error(f"Failed to archive: {e}")
+            try:
+                log_failure(symbol='instrument_archive', exchange='LOCAL', reason='archive_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log archive_error")
     
     def _write_current_file(self, instruments: Dict[str, ZerodhaInstrument],
                            change_summary: Optional[Dict]) -> None:
@@ -276,6 +293,10 @@ class ZerodhaInstrumentMasterManager:
                 json.dump(data, f, indent=2)
         except Exception as e:
             logger.error(f"Failed to write JSON: {e}")
+            try:
+                log_failure(symbol='instrument_write_json', exchange='LOCAL', reason='write_json_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log write_json_error")
     
     def _write_parquet_file(self, instruments: Dict[str, ZerodhaInstrument]) -> None:
         """Write instruments to Parquet for efficient querying"""
@@ -293,6 +314,10 @@ class ZerodhaInstrumentMasterManager:
             
         except Exception as e:
             logger.warning(f"Failed to write Parquet (optional): {e}")
+            try:
+                log_failure(symbol='instrument_write_parquet', exchange='LOCAL', reason='write_parquet_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log write_parquet_error")
     
     def _build_search_index(self) -> None:
         """Build search index for fast prefix matching"""
@@ -315,6 +340,10 @@ class ZerodhaInstrumentMasterManager:
                 json.dump(self.search_index, f)
         except Exception as e:
             logger.warning(f"Failed to write search index: {e}")
+            try:
+                log_failure(symbol='instrument_index', exchange='LOCAL', reason='index_write_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log index_write_error")
     
     # =========================================================================
     # LOADING & QUERYING
@@ -339,6 +368,10 @@ class ZerodhaInstrumentMasterManager:
             
         except Exception as e:
             logger.error(f"Failed to load instruments: {e}")
+            try:
+                log_failure(symbol='instrument_load', exchange='LOCAL', reason='load_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log load_error")
     
     def _load_history(self) -> List[Dict]:
         """Load history"""
@@ -352,6 +385,10 @@ class ZerodhaInstrumentMasterManager:
             return history
         except Exception as e:
             logger.error(f"Failed to load history: {e}")
+            try:
+                log_failure(symbol='instrument_history', exchange='LOCAL', reason='history_load_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log history_load_error")
             return []
     
     def search(self, query: str, limit: int = 100) -> List[ZerodhaInstrument]:
@@ -482,6 +519,10 @@ class ZerodhaInstrumentMasterManager:
             
         except Exception as e:
             logger.error(f"Failed to create DataFrame: {e}")
+            try:
+                log_failure(symbol='instrument_df', exchange='LOCAL', reason='dataframe_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log dataframe_error")
             return pd.DataFrame()
     
     def get_archive_info(self) -> Dict:

@@ -13,6 +13,8 @@ from dataclasses import dataclass, field, asdict
 from collections import defaultdict
 import queue
 import time
+from utils.failure_logger import log_failure
+from utils.instrument_exceptions import add_to_exceptions
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -126,6 +128,10 @@ class WebSocketQuoteHandler:
         
         except Exception as e:
             logger.error(f"Failed to connect WebSocket: {e}")
+            try:
+                log_failure(symbol='websocket_connect', exchange='KITE', reason='connect_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log connect_failed")
             return False
     
     def _receive_loop(self):
@@ -134,6 +140,10 @@ class WebSocketQuoteHandler:
             self.ws.connect()
         except Exception as e:
             logger.error(f"WebSocket receive error: {e}")
+            try:
+                log_failure(symbol='websocket_receive', exchange='KITE', reason='receive_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log receive_error")
     
     def subscribe_quotes(self, tokens: List[int]):
         """
@@ -148,6 +158,14 @@ class WebSocketQuoteHandler:
             logger.info(f"Subscribed to {len(tokens)} instruments")
         except Exception as e:
             logger.error(f"Failed to subscribe: {e}")
+            try:
+                add_to_exceptions([str(t) for t in tokens])
+            except Exception:
+                logger.debug("[EXCEPTIONS] Could not add subscribe tokens to exceptions")
+            try:
+                log_failure(symbol='websocket_subscribe', exchange='KITE', reason='subscribe_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log subscribe_failed")
     
     def subscribe_symbols(self, symbols: List[str]):
         """
@@ -173,6 +191,10 @@ class WebSocketQuoteHandler:
         
         except Exception as e:
             logger.error(f"Failed to subscribe symbols: {e}")
+            try:
+                log_failure(symbol='websocket_subscribe_symbols', exchange='KITE', reason='subscribe_symbols_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log subscribe_symbols_failed")
             return False
     
     def _handle_message(self, message: Dict):
@@ -208,9 +230,17 @@ class WebSocketQuoteHandler:
                     callback(quote)
                 except Exception as e:
                     logger.error(f"Callback error: {e}")
+                    try:
+                        log_failure(symbol=quote.symbol if hasattr(quote, 'symbol') else 'websocket_callback', exchange='KITE', reason='callback_error', details=str(e))
+                    except Exception:
+                        logger.debug("[FAILURE_LOG] Could not log callback_error")
         
         except Exception as e:
             logger.error(f"Message handling error: {e}")
+            try:
+                log_failure(symbol='websocket_message', exchange='KITE', reason='message_handling_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log message_handling_error")
     
     def register_quote_callback(self, callback: Callable):
         """
@@ -238,6 +268,10 @@ class WebSocketQuoteHandler:
             matching = [i for i in instruments if i['instrument_token'] == token]
             return matching[0]['tradingsymbol'] if matching else f"TOKEN_{token}"
         except:
+            try:
+                log_failure(symbol=f'TOKEN_{token}', exchange='KITE', reason='symbol_lookup_failed', details=f"token={token}")
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log symbol_lookup_failed")
             return f"TOKEN_{token}"
     
     def disconnect(self):

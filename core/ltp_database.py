@@ -13,6 +13,8 @@ from threading import Lock
 
 logger = logging.getLogger(__name__)
 
+from utils.failure_logger import record_failure
+
 # Database path
 DB_PATH = Path(__file__).parent.parent / "data" / "ltp_database.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -130,6 +132,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error updating LTP for {symbol}: {e}")
+            try:
+                record_failure(symbol=symbol, exchange=exchange, reason="ltp_update_failed", details=str(e))
+            except Exception:
+                pass
     
     def get_ltp(self, symbol: str) -> Optional[Dict]:
         """
@@ -170,6 +176,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error fetching LTP for {symbol}: {e}")
+            try:
+                record_failure(symbol=symbol, exchange=None, reason="ltp_fetch_failed", details=str(e))
+            except Exception:
+                pass
             return None
     
     def get_all_ltp(self) -> pd.DataFrame:
@@ -193,6 +203,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error fetching all LTP: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="ltp_fetch_all_failed", details=str(e))
+            except Exception:
+                pass
             return pd.DataFrame()
     
     def get_ltp_history(self, symbol: str, 
@@ -222,6 +236,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error fetching LTP history for {symbol}: {e}")
+            try:
+                record_failure(symbol=symbol, exchange=None, reason="ltp_history_fetch_failed", details=str(e))
+            except Exception:
+                pass
             return pd.DataFrame()
     
     def bulk_update_ltp(self, ltp_data: Dict[str, Dict]):
@@ -272,6 +290,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error in bulk LTP update: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="ltp_bulk_update_failed", details=str(e))
+            except Exception:
+                pass
     
     def cleanup_old_history(self, days_to_keep: int = 30):
         """
@@ -299,6 +321,10 @@ class LTPDatabase:
                     
         except Exception as e:
             logger.error(f"Error cleaning up old LTP history: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="ltp_cleanup_failed", details=str(e))
+            except Exception:
+                pass
     
     def get_summary_stats(self) -> Dict:
         """
@@ -336,6 +362,10 @@ class LTPDatabase:
                 
         except Exception as e:
             logger.error(f"Error fetching summary stats: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="ltp_summary_stats_failed", details=str(e))
+            except Exception:
+                pass
             return {}
 
 

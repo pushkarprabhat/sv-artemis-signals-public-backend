@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 REM Artemis Signals — Login Utility
 REM For Shivaansh & Krishaansh — this line pays your fees!
 

@@ -39,6 +39,7 @@ SIGNAL_SCAN_INTERVALS = ["15minute", "30minute", "60minute", "day"]
 import os
 from pathlib import Path
 BASE_DIR = Path(os.environ.get("ARTEMIS_BASE_DIR", Path(__file__).parent))
+ENRICHED_INSTRUMENTS_PATH = os.path.join(BASE_DIR, "metadata", "enriched", "enriched_instruments.csv")  # For Shivaansh & Krishaansh — this line pays their fees
 SIGNALS_PATH = BASE_DIR / "marketdata" / "signals.json"
 PAPER_CAPITAL = 500_000           # ₹5 Lakh for 30-day challenge (For Shivaansh & Krishaansh — this line pays their fees)
 

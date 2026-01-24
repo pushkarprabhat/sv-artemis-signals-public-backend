@@ -9,6 +9,7 @@ from typing import Dict, List, Optional, Tuple
 import logging
 
 logger = logging.getLogger(__name__)
+from utils.failure_logger import record_failure
 
 
 class ExchangeMarketHours:
@@ -203,6 +204,10 @@ class SymbolsManager:
             logger.info(f"Loaded {len(self.nse_symbols)} NSE symbols, {len(self.mcx_symbols)} MCX symbols")
         except Exception as e:
             logger.error(f"Error loading symbols: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="symbols_load_failed", details=str(e))
+            except Exception:
+                pass
     
     def _save(self):
         """Save symbol databases to disk"""
@@ -212,6 +217,10 @@ class SymbolsManager:
             self.metadata_file.write_text(json.dumps(self.metadata, indent=2))
         except Exception as e:
             logger.error(f"Error saving symbols: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="symbols_save_failed", details=str(e))
+            except Exception:
+                pass
     
     def add_nse_symbol(self, symbol: str, instrument_type: str, sector: Optional[str] = None, 
                       market_cap: Optional[str] = None, metadata: Optional[Dict] = None):

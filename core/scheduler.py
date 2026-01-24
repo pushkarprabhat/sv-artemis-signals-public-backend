@@ -20,6 +20,7 @@ from dataclasses import dataclass
 import logging
 import json
 from utils.logger import logger
+from utils.failure_logger import log_failure
 
 # Try to import APScheduler, with graceful fallback
 try:
@@ -178,6 +179,10 @@ class APSchedulerWrapper(SchedulerBase):
         
         except Exception as e:
             logger.error(f"Failed to schedule task '{name}': {e}")
+            try:
+                log_failure(symbol=name, exchange='LOCAL', reason='schedule_task_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log schedule_task_failed")
             return False
     
     def start(self):
@@ -196,6 +201,10 @@ class APSchedulerWrapper(SchedulerBase):
             return True
         except Exception as e:
             logger.error(f"Failed to start scheduler: {e}")
+            try:
+                log_failure(symbol='scheduler', exchange='LOCAL', reason='start_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log start_failed")
             return False
     
     def stop(self):
@@ -209,6 +218,10 @@ class APSchedulerWrapper(SchedulerBase):
                 logger.info("✓ Scheduler stopped")
         except Exception as e:
             logger.error(f"Failed to stop scheduler: {e}")
+            try:
+                log_failure(symbol='scheduler', exchange='LOCAL', reason='stop_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log stop_failed")
     
     def get_scheduled_tasks(self) -> List[ScheduledTask]:
         """Get list of scheduled tasks"""
@@ -231,6 +244,10 @@ class APSchedulerWrapper(SchedulerBase):
             return True
         except Exception as e:
             logger.error(f"Failed to enable task '{name}': {e}")
+            try:
+                log_failure(symbol=name, exchange='LOCAL', reason='enable_task_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log enable_task_failed")
             return False
     
     def disable_task(self, name: str) -> bool:
@@ -246,6 +263,10 @@ class APSchedulerWrapper(SchedulerBase):
             return True
         except Exception as e:
             logger.error(f"Failed to disable task '{name}': {e}")
+            try:
+                log_failure(symbol=name, exchange='LOCAL', reason='disable_task_failed', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log disable_task_failed")
             return False
     
     def _job_error_handler(self, event):
@@ -266,6 +287,10 @@ class APSchedulerWrapper(SchedulerBase):
                         self.disable_task(task_name)
         except Exception as e:
             logger.error(f"Error in job error handler: {e}")
+            try:
+                log_failure(symbol='job_error_handler', exchange='LOCAL', reason='job_error_handler_exception', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log job_error_handler_exception")
 
 
 # ============================================================================

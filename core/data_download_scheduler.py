@@ -21,6 +21,8 @@ from core.zerodha_download_status_manager import (
 )
 from universe.symbols import load_universe
 from utils.logger import logger
+from utils.failure_logger import record_failure
+from utils.instrument_exceptions import add_to_exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +142,10 @@ class DataDownloadScheduler:
                 logger.info(f"Loaded scheduler state for {len(self.last_download_times)} symbols")
         except Exception as e:
             logger.error(f"Failed to load scheduler state: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="scheduler_state_load_failed", details=str(e))
+            except Exception:
+                pass
     
     def _save_state(self):
         """Persist scheduler state"""
@@ -155,6 +161,10 @@ class DataDownloadScheduler:
                 json.dump(data, f, indent=2)
         except Exception as e:
             logger.error(f"Failed to save scheduler state: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="scheduler_state_save_failed", details=str(e))
+            except Exception:
+                pass
     
     def start(self, max_workers: int = 4):
         """Start the download scheduler"""
@@ -214,6 +224,10 @@ class DataDownloadScheduler:
             
             except Exception as e:
                 logger.error(f"Scheduler error: {e}")
+                try:
+                    record_failure(symbol=None, exchange=None, reason="scheduler_loop_error", details=str(e))
+                except Exception:
+                    pass
                 time.sleep(60)  # Back off on error
     
     def _check_and_schedule_downloads(self):
@@ -236,6 +250,10 @@ class DataDownloadScheduler:
         
         except Exception as e:
             logger.error(f"Error in scheduling: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="scheduling_error", details=str(e))
+            except Exception:
+                pass
     
     def _should_download(self, symbol: str) -> bool:
         """Check if a symbol needs downloading"""
@@ -287,6 +305,10 @@ class DataDownloadScheduler:
             from config import SIGNALS_PATH, SIGNAL_SCAN_INTERVALS
         except ImportError as e:
             logger.error(f"Failed to import download or signal modules: {e}")
+            try:
+                record_failure(symbol=None, exchange=None, reason="import_error", details=str(e))
+            except Exception:
+                pass
             return
         if self.on_download_start:
             self.on_download_start({
@@ -314,6 +336,16 @@ class DataDownloadScheduler:
             except Exception as e:
                 self.error_counts[symbol] = self.error_counts.get(symbol, 0) + 1
                 logger.error(f"Download failed for {symbol}: {e}")
+                try:
+                    record_failure(symbol=symbol, exchange=None, reason="batch_download_exception", details=str(e))
+                except Exception:
+                    pass
+                # Add to instrument exceptions if retries exhausted
+                try:
+                    if self.error_counts[symbol] >= self.max_retries:
+                        add_to_exceptions(symbol)
+                except Exception:
+                    pass
                 if self.on_error:
                     self.on_error({
                         'symbol': symbol,
@@ -374,6 +406,14 @@ class DataDownloadScheduler:
                     time.sleep(backoff_time)
                 else:
                     logger.error(f"Download failed for {symbol} after {max_retries} retries: {e}")
+                    try:
+                        record_failure(symbol=symbol, exchange=None, reason="download_retries_exhausted", details=str(e))
+                    except Exception:
+                        pass
+                    try:
+                        add_to_exceptions(symbol)
+                    except Exception:
+                        pass
                     return False
         
         return False

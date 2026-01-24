@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 import threading
 from enum import Enum
 import json
+from utils.failure_logger import log_failure
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +144,11 @@ class PriceMonitor:
             try:
                 callback(order, price)
             except Exception as e:
-                logger.error(f"Execution callback error: {e}")
+                    logger.error(f"Execution callback error: {e}")
+                    try:
+                        log_failure(symbol=order.order_id if hasattr(order, 'order_id') else 'execution_callback', exchange='LOCAL', reason='execution_callback_error', details=str(e))
+                    except Exception:
+                        logger.debug("[FAILURE_LOG] Could not log execution_callback_error")
     
     def _mark_failed(self, order: QuickEntryOrder, reason: str):
         """Mark order as failed"""
@@ -276,6 +281,10 @@ class QuickEntryOrchestrator:
         
         except Exception as e:
             logger.error(f"Order execution error: {e}")
+            try:
+                log_failure(symbol=order.order_id if 'order' in locals() and hasattr(order, 'order_id') else 'order_execution', exchange='LOCAL', reason='order_execution_error', details=str(e))
+            except Exception:
+                logger.debug("[FAILURE_LOG] Could not log order_execution_error")
     
     def get_pending_orders(self) -> List[QuickEntryOrder]:
         """Get all pending orders"""
