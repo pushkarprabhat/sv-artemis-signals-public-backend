@@ -7,6 +7,15 @@ import requests
 from config import TELEGRAM_TOKEN, TELEGRAM_CHAT_IDS, ENABLE_TELEGRAM
 from utils.logger import logger
 from datetime import datetime
+import time
+import threading
+import hashlib
+
+# Per-recipient dedupe cache: key = (chat_id, message_hash) -> timestamp_sent
+_last_sent_lock = threading.Lock()
+_last_sent = {}
+# TTL in seconds to suppress duplicate messages per recipient
+_DUPLICATE_TTL = 30
 
 # --- STARTUP CHECK: Warn if TELEGRAM_TOKEN is missing ---
 if not TELEGRAM_TOKEN:
@@ -49,13 +58,37 @@ def send_telegram(message: str, error: bool = False, chat_ids: list = None) -> b
         full_message = f"{prefix}[Artemis] [{timestamp}] {message}"
         
         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-        
+
         success_count = 0
+        # Message body hash (without timestamp/prefix) used for dedupe
+        h = hashlib.sha256(message.encode('utf-8')).hexdigest()
+        now_ts = time.time()
+
         for chat_id in recipients:
             try:
+                suppressed = False
+                try:
+                    with _last_sent_lock:
+                        last = _last_sent.get((chat_id, h))
+                        if last and (now_ts - last) < _DUPLICATE_TTL:
+                            suppressed = True
+                        else:
+                            _last_sent[(chat_id, h)] = now_ts
+                            # opportunistic cleanup
+                            keys_to_delete = [k for k, v in _last_sent.items() if now_ts - v > _DUPLICATE_TTL]
+                            for k in keys_to_delete:
+                                _last_sent.pop(k, None)
+                except Exception:
+                    # best-effort dedupe only
+                    suppressed = False
+
+                if suppressed:
+                    logger.debug(f"Duplicate Telegram message suppressed for {chat_id}")
+                    continue
+
                 payload = {"chat_id": chat_id, "text": full_message}
                 response = requests.post(url, data=payload, timeout=5)
-                
+
                 if response.status_code == 200:
                     logger.debug(f"[OK] Telegram sent to {chat_id}: {message[:50]}...")
                     success_count += 1
@@ -63,7 +96,7 @@ def send_telegram(message: str, error: bool = False, chat_ids: list = None) -> b
                     logger.warning(f"Telegram API error for {chat_id}: {response.status_code}")
             except Exception as e:
                 logger.warning(f"Failed to send to {chat_id}: {e}")
-        
+
         return success_count > 0
             
     except requests.exceptions.Timeout:
